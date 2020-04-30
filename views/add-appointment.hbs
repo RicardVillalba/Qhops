@@ -1,4 +1,4 @@
-<form action='/endPointName' method='POST'>
+<form action='/add-appointment' method='POST'>
 
   <label for=''>Name</label>
   <input type='text' name='fName'>
@@ -13,7 +13,7 @@
   <input type='text' name='email'>
 
   <label for=''>Is urgent</label>
-  <input type=checkbox checked name=isUrgent>
+  <input type=checkbox  name=isUrgent>
 
   <input type="radio" id="waiting" name="status" value="waiting">
   <label for="male">Waiting</label><br>
@@ -27,14 +27,3 @@
   <button type='submit'>Submit</button>
 </form>
 
-{{!-- fName: {type: String, required: true},
-    lName: {type: String, required: true},
-    tags: [String],
-    email: {type: String, required: true},
-    isUrgent: Boolean,
-    status: {
-        type: String,
-        enum: ["waiting", "attending", "attended"],
-        appointment_start_At: Date,
-        appointment_finished_At: Date,
-        required: true --}}

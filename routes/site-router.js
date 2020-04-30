@@ -7,21 +7,21 @@ function isLoggedIn(req, res, next) {
     if (req.session.currentUser) { // If user is authenticated
         next();
     } else {
-        res.redirect('/auth/login');
+        res.redirect('auth/login');
     }
 }
 
 // ACCESS DASHBOARD
 // GET         '/dashboard'       
 siteRouter.get('/dashboard', isLoggedIn, (req, res, next) => {
-    res.render('/dashboard');
+    res.render('dashboard');
 })
 
 // ACCES ADD APPOINTMENT FORM
 
 // GET         '/add-appointment'       
 siteRouter.get('/add-appointment', isLoggedIn, (req, res, next) => {
-    res.render('/add-appointment');
+    res.render('add-appointment');
 })
 
 // ADD APPOINTMENT
@@ -41,10 +41,10 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
     Appointment.create({ fName, lName, email, tags, isUrgent, status })
         .then((appointment) => {
             // 6. When the appointment is created, redirect (we choose - add form)
-            res.redirect("/add-appointment");
+            res.redirect("add-appointment");
         })
         .catch((err) => {
-            res.render("/add-appointment", {
+            res.render("add-appointment", {
                 errorMessage: `Error during add appointment`,
             });
         });

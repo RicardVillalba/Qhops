@@ -33,17 +33,17 @@ function isLoggedIn(req, res, next) {
 //     return; // stops the execution of the function furhter
 //   }
 
-  // 2.2 Verify the password strength
-  // const passwordStrength = zxcvbn(password).score;
+  // // 2.2 Verify the password strength
+  // // const passwordStrength = zxcvbn(password).score;
 
-  // console.log("zxcvbn(password) :>> ", zxcvbn(password));
-  // console.log("passwordStrenth :>> ", passwordStrength);
-  // if (passwordStrength < 3) {
-  //   res.render("auth-views/signup-form", {
-  //     errorMessage: zxcvbn(password).feedback.warning,
-  //   });
-  //   return;
-  // }
+  // // console.log("zxcvbn(password) :>> ", zxcvbn(password));
+  // // console.log("passwordStrenth :>> ", passwordStrength);
+  // // if (passwordStrength < 3) {
+  // //   res.render("auth-views/signup-form", {
+  // //     errorMessage: zxcvbn(password).feedback.warning,
+  // //   });
+  // //   return;
+  // // }
 
   // // 3. Check if the email is not taken
   // Admin.findOne({ email })

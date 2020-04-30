@@ -1,6 +1,8 @@
 const express = require('express');
 const siteRouter = express.Router();
 const Appointment = require("./../models/appointment-model");
+const TokenGenerator = require('tokgen');
+let token = new TokenGenerator();
 
 // Middleware function - checks if the user is authenticated
 function isLoggedIn(req, res, next) {
@@ -30,15 +32,22 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
     const { fName, lName, email, tags, isUrgent, status } = req.body;
 
     // 1. Check if the required fields are provided
-    if (email === "" || fname === "" || lname === "" || status === "") {
-        res.render("auth-views/add-appointment", {
+    if (email === "" || fName === "" || lName === "" || status === "") {
+        res.render("add-appointment", {
             errorMessage: "Please fill all the required fields.",
         });
         return; // stops the execution of the function further
     }
 
+    // create random code
+    code = token.generate(8);
+
     // 2. Create new appointment in DB, saving the given fields.
-    Appointment.create({ fName, lName, email, tags, isUrgent, status })
+    console.log(typeof isUrgent);
+    
+    console.log('values to dB--->', code, fName, lName, email, tags, isUrgent, status);
+    
+    Appointment.create({ code, fName, lName, email, tags, isUrgent, status })
         .then((appointment) => {
             // 6. When the appointment is created, redirect (we choose - add form)
             res.redirect("add-appointment");
@@ -92,7 +101,7 @@ siteRouter.post('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
         });
 })
 
-// UPDATE APPOINTMENT, CHANGE STATUS TO ATTENDING (TO ROOM QUEUE)
+// UPDATE APPOINTMENT, CHANGE STATUS TO ATTENDING (TO DONE QUEUE)
 // POST         '/dashboard/done/:id'       
 siteRouter.post('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;

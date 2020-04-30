@@ -1,29 +1,37 @@
 <form action='/add-appointment' method='POST'>
 
-  <label for=''>Name</label>
-  <input type='text' name='fName'>
+    <label for=''>Name</label>
+    <input type='text' name='fName'>
+    <br>
 
-  <label for=''>Last name</label>
-  <input type='text' name='lName'>
+    <label for=''>Last name</label>
+    <input type='text' name='lName'>
+    <br>
+    <label for=''>Email</label>
+    <input type='text' name='email'>
+    <br>
+    <label for=''>Tags</label>
+    <input type='text' name='tags'>
+    <br>
+    <label for=''>Is urgent</label>
+    <input type=checkbox name=isUrgent value='true'>
+    <br>
+    <input type="radio" id="waiting" name="status" value="waiting">
+    <label for="waiting">Waiting</label><br>
+    <input type="radio" id="attending" name="status" value="attending">
+    <label for="attending">Attending</label><br>
+    <input type="radio" id="attended" name="status" value="attended">
+    <label for="attended">Other</label>
 
-  <label for=''>Tags</label>
-  <input type='text' name='tags[]'>
-
-  <label for=''>Email</label>
-  <input type='text' name='email'>
-
-  <label for=''>Is urgent</label>
-  <input type=checkbox  name=isUrgent>
-
-  <input type="radio" id="waiting" name="status" value="waiting">
-  <label for="male">Waiting</label><br>
-  <input type="radio" id="attending" name="attending" value="attending">
-  <label for="female">Attending</label><br>
-  <input type="radio" id="attended" name="attended" value="attended">
-  <label for="Attended">Other</label>
 
 
-
-  <button type='submit'>Submit</button>
+    <button type='submit'>Add Appointment</button>
 </form>
 
+<br>
+<br>
+
+{{!-- Error message display --}}
+{{#if errorMessage}}
+<div class="error-message"> {{errorMessage}} </div>
+{{/if}}

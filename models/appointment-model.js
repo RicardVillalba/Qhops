@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 // CREATE SCHEMA
 const appointmentSchema = new Schema({
-    // code: {type: String, required: true},
+    code: {type: String, required: true},
     fName: {type: String, required: true},
     lName: {type: String, required: true},
     tags: [String],

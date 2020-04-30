@@ -19,6 +19,7 @@
     "http-errors": "~1.6.3",
     "mongoose": "^5.9.10",
     "morgan": "~1.9.1",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "tokgen": "^1.0.0"
   }
 }

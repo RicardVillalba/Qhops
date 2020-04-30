@@ -1,10 +1,40 @@
-<form action='/endPointName' method='GET'>
+<form action='/endPointName' method='POST'>
+
+  <label for=''>Name</label>
+  <input type='text' name='fName'>
+
+  <label for=''>Last name</label>
+  <input type='text' name='lName'>
+
+  <label for=''>Tags</label>
+  <input type='text' name='tags[]'>
 
   <label for=''>Email</label>
-  <input type='text' name='Email'>
+  <input type='text' name='email'>
 
-  <label for=''>Password</label>
-  <input type='text' name='Password'>
+  <label for=''>Is urgent</label>
+  <input type=checkbox checked name=isUrgent>
+
+  <input type="radio" id="waiting" name="status" value="waiting">
+  <label for="male">Waiting</label><br>
+  <input type="radio" id="attending" name="attending" value="attending">
+  <label for="female">Attending</label><br>
+  <input type="radio" id="attended" name="attended" value="attended">
+  <label for="Attended">Other</label>
+
+
 
   <button type='submit'>Submit</button>
 </form>
+
+{{!-- fName: {type: String, required: true},
+    lName: {type: String, required: true},
+    tags: [String],
+    email: {type: String, required: true},
+    isUrgent: Boolean,
+    status: {
+        type: String,
+        enum: ["waiting", "attending", "attended"],
+        appointment_start_At: Date,
+        appointment_finished_At: Date,
+        required: true --}}

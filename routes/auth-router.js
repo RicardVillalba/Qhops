@@ -1,7 +1,7 @@
 const express = require("express");
 const authRouter = express.Router();
 const Admin = require("./../models/admin-model");
-
+const Appointment = require("./../models/appointment-model")
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
 
@@ -135,17 +135,6 @@ authRouter.get("/logout", (req, res) => {
     res.redirect("/");
   });
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = authRouter;

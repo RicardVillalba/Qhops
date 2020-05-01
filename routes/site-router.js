@@ -52,7 +52,11 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
     
     console.log('values to dB--->', code, fName, lName, email, tagsList, isUrgent, status);
     
-    Appointment.create({ code, fName, lName, email, tagsList, isUrgent, status })
+    // to create an array out of the tags string:
+    const tags = req.body.tagsList.split(" ")
+    console.log(tags);
+
+    Appointment.create({ code, fName, lName, email, tags, isUrgent, status })
         .then((appointment) => {
             // 6. When the appointment is created, redirect (we choose - add form)
             res.redirect("add-appointment");

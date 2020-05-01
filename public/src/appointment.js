@@ -16,10 +16,6 @@ tagsInput.addEventListener("keypress", function (e) {
 
     console.log("tagsListHidden.value", tagsListHidden.value);
 
-    // On the backend in th post request route
-    // to create an array out of the tags string:
-    // req.body.tagsList.split(" ")
-
     e.target.value = "";
     e.preventDefault()
   }

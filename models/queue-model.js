@@ -4,16 +4,16 @@ const Schema = mongoose.Schema;
 
 // CREATE SCHEMA
 const queueSchema = new Schema({
-    appointments: [ {type: ObjectId, ref: "Appointment" } ],
-    inProgress: [{type: ObjectId, ref: "Appointment" }],
-    appointments_done: [{type: ObjectId, ref: "Appointment" }],
+    appointments: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
+    inProgress: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
+    appointments_done: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
     // roomId: String ????
-    nurseId: ObjectId,
+    nurseId: Schema.Types.ObjectId,
     date: Date,
-    capacity:  Number, //      ( numSpots*workingHours )
+    capacity: Number, //      ( numSpots*workingHours )
     patientsServed: Number,
     avgTime: Number, //   ( timepast / patients_Served )
-    }
+}
 );
 
 

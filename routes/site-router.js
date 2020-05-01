@@ -3,6 +3,8 @@ const siteRouter = express.Router();
 const Appointment = require("./../models/appointment-model");
 const TokenGenerator = require('tokgen');
 let token = new TokenGenerator();
+const Queue = require('./../models/queue-model.js')
+let todayQueue 
 
 // Middleware function - checks if the user is authenticated
 function isLoggedIn(req, res, next) {
@@ -16,8 +18,25 @@ function isLoggedIn(req, res, next) {
 // ACCESS DASHBOARD
 // GET         '/dashboard'       
 siteRouter.get('/dashboard', isLoggedIn, (req, res, next) => {
-    res.render('dashboard');
-})
+
+    const today = new Date()
+    const todayString = today.toLocaleDateString()
+    console.log(todayString);
+
+
+    todayQueue = Queue.find({ date: { $gte: todayString } })
+        todayQueue.populate('appointments inProgress appointments_done')
+        .then((queue) => {
+            console.log(queue[0].appointments[0].code);
+
+
+            // console.log(appointment[0].tags);
+
+            // appointment.tags.join(' ')
+            res.render('dashboard', { queue: queue })
+        })
+        .catch((err) => next(err));
+});
 
 // ACCES ADD APPOINTMENT FORM
 
@@ -44,29 +63,42 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
         if (error) {
             return next(error)
         }
-        
-      
 
-    // 2. Create new appointment in DB, saving the given fields.
-    console.log(typeof isUrgent);
-    
-    console.log('values to dB--->', code, fName, lName, email, tagsList, isUrgent, status);
-    
-    // to create an array out of the tags string:
-    const tags = req.body.tagsList.split(" ")
-    console.log(tags);
 
-    Appointment.create({ code, fName, lName, email, tags, isUrgent, status })
-        .then((appointment) => {
-            // 6. When the appointment is created, redirect (we choose - add form)
-            res.redirect("add-appointment");
-        })
-        .catch((err) => {
-            res.render("add-appointment", {
-                errorMessage: `Error during add appointment`,
+
+        // 2. Create new appointment in DB, saving the given fields.
+        console.log(typeof isUrgent);
+
+        console.log('values to dB--->', code, fName, lName, email, tagsList, isUrgent, status);
+
+        // to create an array out of the tags string:
+        const tags = req.body.tagsList.split(" ")
+        console.log(tags);
+
+        Appointment.create({ code, fName, lName, email, tags, isUrgent, status })
+            .then((appointment) => {
+                
+                
+                // if (appointment.status === 'waiting') {
+                //     // push the appointment _id into queue.appointments[]
+                //     todayQueue.appointments.push(appointment._id)
+                // } else if (appointment.status === 'attending') {
+                //     // push the appointment _id into queue.inProgress[]
+
+                // } else {
+                //     // push the appointment _id into queue.appointments_done[]
+
+                // }
+
+                // 6. When the appointment is created, redirect (we choose - add form)
+                res.redirect("add-appointment");
+            })
+            .catch((err) => {
+                res.render("add-appointment", {
+                    errorMessage: `Error during add appointment`,
+                });
+
             });
-   
-        });
     });
 })
 
@@ -100,7 +132,7 @@ siteRouter.post('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
 
     // 1. Search  appointment in DB to change status.
-    Appointment.findByIdAndUpdate(id, {status:'attending'})
+    Appointment.findByIdAndUpdate(id, { status: 'attending' })
         .then((appointment) => {
             // 2. When the appointment is updated, redirect
             res.redirect("/dashboard");
@@ -118,7 +150,7 @@ siteRouter.post('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
 
     // 1. Search  appointment in DB to change status.
-    Appointment.findByIdAndUpdate(id,{status:'attended'})
+    Appointment.findByIdAndUpdate(id, { status: 'attended' })
         .then((appointment) => {
 
             // 2. When the appointment is updated, redirect

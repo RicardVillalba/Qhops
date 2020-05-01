@@ -29,7 +29,7 @@ siteRouter.get('/add-appointment', isLoggedIn, (req, res, next) => {
 // ADD APPOINTMENT
 // POST         '/add/:id'       
 siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
-    const { fName, lName, email, tags, isUrgent, status } = req.body;
+    const { fName, lName, email, tagsList, isUrgent, status } = req.body;
 
     // 1. Check if the required fields are provided
     if (email === "" || fName === "" || lName === "" || status === "") {
@@ -40,14 +40,19 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
     }
 
     // create random code
-    code = token.generate(8);
+    token.generate(8, (error, code) => { // => 'sySbqK9N'
+        if (error) {
+            return next(error)
+        }
+        
+      
 
     // 2. Create new appointment in DB, saving the given fields.
     console.log(typeof isUrgent);
     
-    console.log('values to dB--->', code, fName, lName, email, tags, isUrgent, status);
+    console.log('values to dB--->', code, fName, lName, email, tagsList, isUrgent, status);
     
-    Appointment.create({ code, fName, lName, email, tags, isUrgent, status })
+    Appointment.create({ code, fName, lName, email, tagsList, isUrgent, status })
         .then((appointment) => {
             // 6. When the appointment is created, redirect (we choose - add form)
             res.redirect("add-appointment");
@@ -56,8 +61,11 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
             res.render("add-appointment", {
                 errorMessage: `Error during add appointment`,
             });
+   
         });
+    });
 })
+
 
 
 // code: String, --> How do we generate the code?
@@ -88,10 +96,9 @@ siteRouter.post('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
 
     // 1. Search  appointment in DB to change status.
-    Appointment.findById(id)
+    Appointment.findByIdAndUpdate(id, {status:'attending'})
         .then((appointment) => {
-            // 2. When the appointment is retrived, change the status to 'attending'
-            appointment.status = 'attending'
+            // 2. When the appointment is updated, redirect
             res.redirect("/dashboard");
         })
         .catch((err) => {
@@ -107,10 +114,10 @@ siteRouter.post('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
 
     // 1. Search  appointment in DB to change status.
-    Appointment.findById(id)
+    Appointment.findByIdAndUpdate(id,{status:'attended'})
         .then((appointment) => {
-            // 2. When the appointment is retrived, change the status to 'attending'
-            appointment.status = 'attended'
+
+            // 2. When the appointment is updated, redirect
             res.redirect("/dashboard");
         })
         .catch((err) => {

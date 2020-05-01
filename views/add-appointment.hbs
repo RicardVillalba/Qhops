@@ -10,22 +10,30 @@
     <label for=''>Email</label>
     <input type='text' name='email'>
     <br>
-    <label for=''>Tags</label>
-    <input type='text' name='tags'>
+
+    <label for="">Tags</label>
+    <input type="text" name="tags" id="tags-input" />
+
+    <!-- THis is hidden input used to send string of tags to server -->
+    <input type="text" id="tags-list" name="tagsList" style="display: none" />
+    <ul id="tags"></ul>
+
     <br>
     <label for=''>Is urgent</label>
     <input type=checkbox name=isUrgent value='true'>
     <br>
     <input type="radio" id="waiting" name="status" value="waiting">
     <label for="waiting">Waiting</label><br>
+
     <input type="radio" id="attending" name="status" value="attending">
     <label for="attending">Attending</label><br>
+
     <input type="radio" id="attended" name="status" value="attended">
     <label for="attended">Other</label>
+    <br>
 
 
-
-    <button type='submit'>Add Appointment</button>
+    <button type='submit' id='noenter'>Add Appointment</button>
 </form>
 
 <br>
@@ -35,3 +43,42 @@
 {{#if errorMessage}}
 <div class="error-message"> {{errorMessage}} </div>
 {{/if}}
+
+<script 
+>
+const tagsInput = document.querySelector("#tags-input");
+const tagsDisplay = document.querySelector("#tags");
+const tagsListHidden = document.querySelector("#tags-list");
+
+tagsInput.addEventListener("keypress", function(e) {
+  let inputText = e.target.value;
+  // const lastTypedChar = inputText[inputText.length - 1];
+
+  if (e.key === "Enter") {
+    const newLi = document.createElement("li");
+    newLi.innerHTML = inputText;
+    tagsDisplay.appendChild(newLi);
+
+    if (tagsListHidden.value ==="" ) tagsListHidden.value += inputText;
+    else tagsListHidden.value += " " + inputText;
+
+    console.log("tagsListHidden.value", tagsListHidden.value);
+
+    // On the backend in th post request route
+    // to create an array out of the tags string:
+    // req.body.tagsList.split(" ")
+
+    e.target.value = "";
+    
+  }
+});
+
+
+</script>
+<script type="text/javascript">
+    window.addEventListener('keydown', function (e) {
+        if (e.keyIdentifier == 'U+000A' || e.keyIdentifier == 'Enter' || e.keyCode == 13) {
+            if (e.target.nodeName === 'INPUT' && e.target.id == 'noenter') { e.preventDefault(); return false; }
+        }
+    }, true);
+</script>

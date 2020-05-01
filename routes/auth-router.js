@@ -5,35 +5,35 @@ const Appointment = require("./../models/appointment-model")
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
 
-function isLoggedIn(req, res, next) {
+function isNotLoggedIn(req, res, next) {
   if (!req.session.currentUser) { // If user is authenticated
     next();
   } else {
-    res.redirect('../dashboard');
+    res.redirect('/dashboard');
   }
 }
 
 //const zxcvbn = require("zxcvbn");
 
- // GET    '/auth/signup'     -  Renders the signup form
- authRouter.get("/signup",isLoggedIn, (req, res) => {
-   res.render("auth-views/signup-form");
- });
+// GET    '/auth/signup'     -  Renders the signup form
+authRouter.get("/signup", isNotLoggedIn, (req, res) => {
+  res.render("auth-views/signup-form");
+});
 
 // // POST    '/auth/signup'
- authRouter.post("/signup", (req, res, next) => {
+authRouter.post("/signup", (req, res, next) => {
   // 1. Get the email and password from req.body
-   const { email, password } = req.body;
-    console.log(password);
+  const { email, password } = req.body;
+  console.log(password);
 
 
-   // 2.1 Check if the email and password are provided
-   if (email === "" || password === "") {
-     res.render("auth-views/signup-form", {
-       errorMessage: "email and Password are required.",
-     });console.log(email);
-     return; // stops the execution of the function furhter
-   }
+  // 2.1 Check if the email and password are provided
+  if (email === "" || password === "") {
+    res.render("auth-views/signup-form", {
+      errorMessage: "email and Password are required.",
+    }); console.log(email);
+    return; // stops the execution of the function furhter
+  }
 
   // // 2.2 Verify the password strength
   // // const passwordStrength = zxcvbn(password).score;
@@ -47,42 +47,42 @@ function isLoggedIn(req, res, next) {
   // //   return;
   // // }
 
-   // 3. Check if the email is not taken
-   Admin.findOne({ email })
-     .then((userObj) => {
-       if (userObj) {
-         // if user was found
-         res.render("auth-views/signup-form", {
-           errorMessage: `email ${email} is already taken.`,
+  // 3. Check if the email is not taken
+  Admin.findOne({ email })
+    .then((userObj) => {
+      if (userObj) {
+        // if user was found
+        res.render("auth-views/signup-form", {
+          errorMessage: `email ${email} is already taken.`,
         });
-         return;
-       } else {
-         // Allow the admin to signup if above conditions are ok
+        return;
+      } else {
+        // Allow the admin to signup if above conditions are ok
 
-         // 4. Generate salts and encrypt the password
-         const salt = bcrypt.genSaltSync(saltRounds);
-         const hashedPassword = bcrypt.hashSync(password, salt);
+        // 4. Generate salts and encrypt the password
+        const salt = bcrypt.genSaltSync(saltRounds);
+        const hashedPassword = bcrypt.hashSync(password, salt);
 
-         // 5. Create new admin in DB, saving the encrypted password
-         Admin.create({ email, password: hashedPassword })
-           .then((user) => {
-             // 6. When the admin is created, redirect (we choose - home page)
-             res.redirect("/");
-           })
-           .catch((err) => {
-             res.render("auth-views/signup-form", {
-               errorMessage: `Error during signup`,
-             });
-           });
-       }
-     })
-     .catch((err) => next(err));
+        // 5. Create new admin in DB, saving the encrypted password
+        Admin.create({ email, password: hashedPassword })
+          .then((user) => {
+            // 6. When the admin is created, redirect (we choose - home page)
+            res.redirect("/");
+          })
+          .catch((err) => {
+            res.render("auth-views/signup-form", {
+              errorMessage: `Error during signup`,
+            });
+          });
+      }
+    })
+    .catch((err) => next(err));
 
-   //X.  Catch errors coming from calling to User collection
- });
+  //X.  Catch errors coming from calling to User collection
+});
 
 // GET  '/auth/login'
-authRouter.get("/login", isLoggedIn, (req, res) => {
+authRouter.get("/login", isNotLoggedIn, (req, res) => {
   res.render("auth-views/login-form");
 });
 
@@ -117,7 +117,7 @@ authRouter.post("/login", (req, res, next) => {
           req.session.currentUser = user;
 
           // 5. Redirect the user to some page (we choose - home page)
-          res.redirect("dashboard");
+          res.redirect("/dashboard");
         }
       }
     })

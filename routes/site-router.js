@@ -4,7 +4,11 @@ const Appointment = require("./../models/appointment-model");
 const TokenGenerator = require('tokgen');
 let token = new TokenGenerator();
 const Queue = require('./../models/queue-model.js')
-let todayQueue 
+
+const today = new Date()
+const todayString = today.toLocaleDateString()
+console.log(todayString);
+let todayQueue = Queue.find({ date: { $gte: todayString } })
 
 // Middleware function - checks if the user is authenticated
 function isLoggedIn(req, res, next) {
@@ -19,14 +23,13 @@ function isLoggedIn(req, res, next) {
 // GET         '/dashboard'       
 siteRouter.get('/dashboard', isLoggedIn, (req, res, next) => {
 
-    const today = new Date()
-    const todayString = today.toLocaleDateString()
-    console.log(todayString);
 
 
-    todayQueue = Queue.find({ date: { $gte: todayString } })
-        todayQueue.populate('appointments inProgress appointments_done')
+
+    todayQueue.populate('appointments inProgress appointments_done')
         .then((queue) => {
+            console.log(queue);
+
             console.log(queue[0].appointments[0].code);
 
 
@@ -67,22 +70,42 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
 
 
         // 2. Create new appointment in DB, saving the given fields.
-        console.log(typeof isUrgent);
 
         console.log('values to dB--->', code, fName, lName, email, tagsList, isUrgent, status);
 
         // to create an array out of the tags string:
         const tags = req.body.tagsList.split(" ")
         console.log(tags);
+        //console.log(todayQueue);
+
 
         Appointment.create({ code, fName, lName, email, tags, isUrgent, status })
             .then((appointment) => {
-                
-                
+                console.log(appointment._id);
+
+
+                Queue.find({ date: { $gte: todayString } })
+                    .then((queue) => {
+                        console.log(queue[0].appointments);
+                        let appointmentsArray = queue[0].appointments
+                        console.log(appointmentsArray);
+                        appointmentsArray.push(appointment._id)
+                        console.log(appointmentsArray);
+
+                        return Queue.findByIdAndUpdate(queue[0]._id, {appointments:appointmentsArray})
+                    })
+                    .then((queue) => console.log(queue))
+                    .catch((err) => next(err));
+
+
                 // if (appointment.status === 'waiting') {
                 //     // push the appointment _id into queue.appointments[]
-                //     todayQueue.appointments.push(appointment._id)
-                // } else if (appointment.status === 'attending') {
+                //     //console.log(todayQueue.appointments);
+
+                //     // todayQueue.appointments.push(appointment._id)
+                // }
+
+                // else if (appointment.status === 'attending') {
                 //     // push the appointment _id into queue.inProgress[]
 
                 // } else {
@@ -91,7 +114,7 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
                 // }
 
                 // 6. When the appointment is created, redirect (we choose - add form)
-                res.redirect("add-appointment");
+                // res.redirect("add-appointment");
             })
             .catch((err) => {
                 res.render("add-appointment", {

@@ -19,21 +19,23 @@
         {{#each this.tags}}
         <td>{{this}}</td>
         {{/each}}
-        {{/each}}
+
 
         <td>
-            <a href="">
+            <a href="/dashboard/to_room/{{this._id}}">
                 <button>TO ROOM</button>
             </a>
-            <a href="">
+            <a href="/dashboard/delete/{{this._id}}">
                 <button>DELETE</button>
             </a>
         </td>
     </tr>
+    {{/each}}
+    {{/each}}
+
     <br>
 
 </table>
-{{/each}}
 
 
 <a href="/add-appointment">

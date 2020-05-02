@@ -24,24 +24,24 @@ const queueObj = {
     patientsServed: '',
     avgTime: '', //   ( timepast / patients_Served )
 }
-
+// how to avoid runing this function every time we enter dashboard?
 function isQueue(req, res, next) {
     const todayQueue = Queue.find({ date: { $gte: todayString } })
-    .then((queue)=>{
-        console.log('queue :>> ', queue[0]);
-        if (queue[0]) {
-            next()
-        } else {
-            const createdQ = Queue.create(queueObj)
-            .then((data) => {
-                console.log(data);
+        .then((queue) => {
+            // console.log('queue :>> ', queue[0]);
+            if (queue[0]) {
                 next()
-            })
-        }
-    })
-        
-    }
-    
+            } else {
+                const createdQ = Queue.create(queueObj)
+                    .then((createdQ) => {
+                        console.log(createdQ);
+                        next()
+                    })
+            }
+        })
+
+}
+
 
 // Middleware function - checks if the user is authenticated
 function isLoggedIn(req, res, next) {
@@ -56,19 +56,13 @@ function isLoggedIn(req, res, next) {
 // GET         '/dashboard'       
 siteRouter.get('/dashboard', isLoggedIn, isQueue, (req, res, next) => {
 
-
-
-
     todayQueue.populate('appointments inProgress appointments_done')
         .then((queue) => {
-            console.log(queue);
+            // console.log(queue);
 
             // console.log(queue[0].appointments[0].code);
-
-
             // console.log(appointment[0].tags);
 
-            // appointment.tags.join(' ')
             res.render('dashboard', { queue: queue })
         })
         .catch((err) => next(err));
@@ -77,7 +71,7 @@ siteRouter.get('/dashboard', isLoggedIn, isQueue, (req, res, next) => {
 // ACCES ADD APPOINTMENT FORM
 
 // GET         '/add-appointment'       
-siteRouter.get('/add-appointment', isLoggedIn, (req, res, next) => {
+siteRouter.get('/add-appointment', isLoggedIn, isQueue, (req, res, next) => {
     res.render('add-appointment');
 })
 
@@ -123,11 +117,11 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
                 if (appointment.status === 'waiting') {
                     Queue.find({ date: { $gte: todayString } })
                         .then((queue) => {
-                            console.log(queue[0].appointments);
+                            // console.log(queue[0].appointments);
                             let appointmentsArray = queue[0].appointments
-                            console.log(appointmentsArray);
+                            // console.log(appointmentsArray);
                             appointmentsArray.push(appointment._id)
-                            console.log(appointmentsArray);
+                            // console.log(appointmentsArray);
 
                             return Queue.findByIdAndUpdate(queue[0]._id, { appointments: appointmentsArray })
                         })
@@ -140,11 +134,11 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
                     // push the appointment _id into queue.inProgress[]
                     Queue.find({ date: { $gte: todayString } })
                         .then((queue) => {
-                            console.log(queue[0].inProgress);
+                            // console.log(queue[0].inProgress);
                             let inProgressArray = queue[0].inProgress
-                            console.log(inProgressArray);
+                            // console.log(inProgressArray);
                             inProgressArray.push(appointment._id)
-                            console.log(inProgressArray);
+                            // console.log(inProgressArray);
 
                             return Queue.findByIdAndUpdate(queue[0]._id, { inProgress: inProgressArray })
                         })
@@ -157,11 +151,11 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
                     // push the appointment _id into queue.appointments_done[]
                     Queue.find({ date: { $gte: todayString } })
                         .then((queue) => {
-                            console.log(queue[0].appointments_done);
+                            // console.log(queue[0].appointments_done);
                             let appointments_doneArray = queue[0].appointments_done
-                            console.log(appointments_doneArray);
+                            // console.log(appointments_doneArray);
                             appointments_doneArray.push(appointment._id)
-                            console.log(appointments_doneArray);
+                            // console.log(appointments_doneArray);
 
                             return Queue.findByIdAndUpdate(queue[0]._id, { appointments_done: inProgressArray })
                         })
@@ -182,13 +176,66 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
 })
 
 
+// UPDATE APPOINTMENT, CHANGE STATUS TO ATTENDING (TO ROOM QUEUE)
+// GET         '/dashboard/to_room/:id'       
+siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
+    const { id } = req.params;
 
-// code: String, --> How do we generate the code?
+    // 1. Search  appointment in DB to change status.
+    Appointment.findByIdAndUpdate(id, { status: 'attending' })
+        .then((appointment) => {
+            // console.log(appointment);
 
+            return appointment
+        })
+        .then((appointment) => {
+            // console.log(appointment)
+            // push the appointment _id into queue.inProgress[]
+            Queue.find({ date: { $gte: todayString } })
+                .then((queue) => {
+                    const todayQ = queue[0]
+                    // console.log(todayQ.inProgress);
+                    let inProgressArray = todayQ.inProgress
+                    // console.log(inProgressArray);
+                    inProgressArray.push(appointment._id)
+                    // console.log(inProgressArray);
+
+                    return Queue.findByIdAndUpdate(todayQ._id, { inProgress: inProgressArray })
+
+                }) // update the appointments array to take out the moved appointment
+                .then((queue) => {
+                    console.log('queue after update :>> ', queue);
+                    function arrayDel(appointment) {
+                        return appointment != id
+                    }
+                    // console.log(typeof appointment._id, appointment._id);
+                    // console.log(typeof appointment._id != id);
+                    // console.log(typeof id, id);
+
+                    let updatedAppointmentsArray = queue.appointments.filter(arrayDel);
+                    console.log('updatedAppointmentsArray :>> ', updatedAppointmentsArray);
+                    return Queue.findByIdAndUpdate(queue._id, { appointments: updatedAppointmentsArray })
+                })
+                .then((queue) => {
+                    console.log(queue)
+
+                })
+                .catch((err) => next(err));
+
+            // 2. When the appointment is updated, redirect
+            res.redirect("/dashboard");
+
+        })
+        .catch((err) => {
+            res.render("/dashboard", {
+                errorMessage: `Error during appointment status update`,
+            });
+        });
+})
 
 // DELETE APPOINTMENT
-// POST         '/dashboard/delete/:id'       
-siteRouter.post('/dashboard/delete/:id', isLoggedIn, (req, res, next) => {
+// get         '/dashboard/delete/:id'       
+siteRouter.get('/dashboard/delete/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
 
     // 1. Search  appointment in DB to be deleted.
@@ -200,25 +247,6 @@ siteRouter.post('/dashboard/delete/:id', isLoggedIn, (req, res, next) => {
         .catch((err) => {
             res.render("/dashboard", {
                 errorMessage: `Error during delete appointment`,
-            });
-        });
-})
-
-
-// UPDATE APPOINTMENT, CHANGE STATUS TO ATTENDING (TO ROOM QUEUE)
-// POST         '/dashboard/to_room/:id'       
-siteRouter.post('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
-    const { id } = req.params;
-
-    // 1. Search  appointment in DB to change status.
-    Appointment.findByIdAndUpdate(id, { status: 'attending' })
-        .then((appointment) => {
-            // 2. When the appointment is updated, redirect
-            res.redirect("/dashboard");
-        })
-        .catch((err) => {
-            res.render("/dashboard", {
-                errorMessage: `Error during appointment status update`,
             });
         });
 })

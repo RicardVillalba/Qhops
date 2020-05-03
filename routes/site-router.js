@@ -6,6 +6,9 @@ let token = new TokenGenerator();
 const Queue = require('./../models/queue-model')
 const Admin = require('./../models/admin-model')
 
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 let today = new Date()
 let todayString = today.toLocaleDateString()
 console.log(todayString);
@@ -146,7 +149,8 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
                         .catch((err) => next(err));
 
 
-                } else {
+                }
+                else if (appointment.status === 'attended') {
 
                     // push the appointment _id into queue.appointments_done[]
                     Queue.find({ date: { $gte: todayString } })
@@ -157,7 +161,7 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
                             appointments_doneArray.push(appointment._id)
                             // console.log(appointments_doneArray);
 
-                            return Queue.findByIdAndUpdate(queue[0]._id, { appointments_done: inProgressArray })
+                            return Queue.findByIdAndUpdate(queue[0]._id, { appointments_done: appointments_doneArray })
                         })
                         .then((queue) => console.log(queue))
                         .catch((err) => next(err));
@@ -202,7 +206,7 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
 
                     return Queue.findByIdAndUpdate(todayQ._id, { inProgress: inProgressArray })
 
-                }) // update the appointments array to take out the moved appointment
+                }) // update the appointments array to remove the moved appointment
                 .then((queue) => {
                     console.log('queue after update :>> ', queue);
                     function arrayDel(appointment) {
@@ -238,16 +242,46 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
 siteRouter.get('/dashboard/delete/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
 
-    // 1. Search  appointment in DB to be deleted.
+    // 1. Search  appointment in AppointmentsDB to be deleted.
     Appointment.findByIdAndRemove(id)
         .then((appointment) => {
-            // 6. When the appointment is created, redirect (we choose - add form)
+
+            // 2. Search in Queue model the appointment by id in the inProgress Array to deleted it.
+
+            // Queue.find({ date: { $gte: todayString } })
+            //     .then((queue) => {
+            //         const todayQ = queue[0]
+            //         console.log('todayQ :>> ', todayQ);
+
+            //         // transform the string `id` in an ObjectId
+            //         idObj = mongoose.Types.ObjectId(id)
+            //         // find and delete the appointment.
+            //         return Queue.findOne({ 'inProgress': idObj })
+            //     })
+            //     .then((data) => {
+            //         console.log(data)
             res.redirect("/dashboard");
+            //     })
+            // .catch((err) => {
+            //     res.render("/dashboard", { errorMessage: `Error during delete appointment` });
+
+            //     // function arrayDel(appointment) {
+            //     //     return appointment != id
+            //     // }
+            //     // // console.log(typeof appointment._id, appointment._id);
+            //     // // console.log(typeof appointment._id != id);
+            //     // // console.log(typeof id, id);
+
+            //     // let updatedAppointmentsArray = queue.appointments.filter(arrayDel);
+            //     // console.log('updatedAppointmentsArray :>> ', updatedAppointmentsArray);
+            //     // return Queue.findByIdAndUpdate(queue._id, { appointments: updatedAppointmentsArray })
+
+            // })
+
+            // 6. When the appointment is created, redirect (we choose - add form)
         })
         .catch((err) => {
-            res.render("/dashboard", {
-                errorMessage: `Error during delete appointment`,
-            });
+            res.render("/dashboard", { errorMessage: `Error during delete appointment` });
         });
 })
 

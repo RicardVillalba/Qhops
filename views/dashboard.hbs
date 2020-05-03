@@ -57,7 +57,9 @@
     <thead>
 
         <tr>
+            <th>Room</th>
             <th>code</th>
+
             <th>Name</th>
             <th>Lastname</th>
             <th>email</th>
@@ -66,11 +68,11 @@
         </tr>
     </thead>
     {{#each queue}}
-    {{#each inProgress}}
-
-
     <tr>
+        {{#each inProgress}}
+        <td>{{this.roomId}}</td>
         <td>{{this.code}}</td>
+
         <td>{{this.fName}}</td>
         <td>{{this.lName}}</td>
         <td>{{this.email}}</td>
@@ -80,8 +82,8 @@
 
 
         <td>
-            <a href="/dashboard/to_room/{{this._id}}">
-                <button>TO ROOM</button>
+            <a href="/dashboard/done/{{this._id}}">
+                <button>DONE</button>
             </a>
             <a href="/dashboard/delete/{{this._id}}">
                 <button>DELETE</button>
@@ -89,6 +91,7 @@
         </td>
     </tr>
     {{/each}}
+
     {{/each}}
 
     <br>
@@ -123,15 +126,6 @@
         <td>{{this}}</td>
         {{/each}}
 
-
-        <td>
-            <a href="/dashboard/to_room/{{this._id}}">
-                <button>TO ROOM</button>
-            </a>
-            <a href="/dashboard/delete/{{this._id}}">
-                <button>DELETE</button>
-            </a>
-        </td>
     </tr>
     {{/each}}
     {{/each}}

@@ -220,10 +220,6 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
                     console.log('updatedAppointmentsArray :>> ', updatedAppointmentsArray);
                     return Queue.findByIdAndUpdate(queue._id, { appointments: updatedAppointmentsArray })
                 })
-                .then((queue) => {
-                    console.log(queue)
-
-                })
                 .catch((err) => next(err));
 
             // 2. When the appointment is updated, redirect
@@ -286,16 +282,50 @@ siteRouter.get('/dashboard/delete/:id', isLoggedIn, (req, res, next) => {
 })
 
 // UPDATE APPOINTMENT, CHANGE STATUS TO ATTENDING (TO DONE QUEUE)
-// POST         '/dashboard/done/:id'       
-siteRouter.post('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
+// GET         '/dashboard/done/:id'       
+siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
 
     // 1. Search  appointment in DB to change status.
     Appointment.findByIdAndUpdate(id, { status: 'attended' })
         .then((appointment) => {
+            // console.log(appointment);
+
+            return appointment
+        })
+        .then((appointment) => {
+            // console.log(appointment)
+            // push the appointment _id into queue.appointments_done[]
+            Queue.find({ date: { $gte: todayString } })
+                .then((queue) => {
+                    const todayQ = queue[0]
+                    // console.log(todayQ.inProgress);
+                    let appointments_doneArray = todayQ.appointments_done
+                    // console.log(appointments_doneArray);
+                    appointments_doneArray.push(appointment._id)
+                    // console.log(appointments_doneArray);
+
+                    return Queue.findByIdAndUpdate(todayQ._id, { appointments_done: appointments_doneArray })
+
+                }) // update the appointments array to remove the moved appointment
+                .then((queue) => {
+                    console.log('queue after update :>> ', queue);
+                    function arrayDel(appointment) {
+                        return appointment != id
+                    }
+                    // console.log(typeof appointment._id, appointment._id);
+                    // console.log(typeof appointment._id != id);
+                    // console.log(typeof id, id);
+
+                    let updatedInProgressArray = queue.inProgress.filter(arrayDel);
+                    console.log('updatedinProgressArray :>> ', updatedInProgressArray);
+                    return Queue.findByIdAndUpdate(queue._id, { inProgress: updatedInProgressArray })
+                })
+                .catch((err) => next(err));
 
             // 2. When the appointment is updated, redirect
             res.redirect("/dashboard");
+
         })
         .catch((err) => {
             res.render("/dashboard", {
@@ -303,6 +333,7 @@ siteRouter.post('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
             });
         });
 })
+
 
 
 

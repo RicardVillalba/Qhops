@@ -79,7 +79,7 @@ siteRouter.get('/add-appointment', isLoggedIn, isQueue, (req, res, next) => {
 })
 
 // ADD APPOINTMENT
-// POST         '/add/:id'       
+// POST         '/appointment'       
 siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
     const { fName, lName, email, tagsList, isUrgent, status } = req.body;
 
@@ -171,10 +171,7 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
                 res.redirect("add-appointment");
             })
             .catch((err) => {
-                res.render("add-appointment", {
-                    errorMessage: `Error during add appointment`,
-                });
-
+                res.render("add-appointment", { errorMessage: `Error during add appointment` });
             });
     });
 })
@@ -334,8 +331,53 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
         });
 })
 
+// ACCESS DASHBOARD
+// GET         '/publicQ'       
+siteRouter.get('/publicQ', isQueue, (req, res, next) => {
+
+    todayQueue.populate('appointments inProgress appointments_done')
+        .then((queue) => {
+            // console.log(queue);
+
+            // console.log(queue[0].appointments[0].code);
+            // console.log(appointment[0].tags);
+
+            res.render('publicQ', { queue: queue })
+        })
+        .catch((err) => next(err));
+});
+
+// POST          '/pastQ'       
+siteRouter.post('/pastQ', isLoggedIn, isQueue, (req, res, next) => {
+    const { date } = req.body;
+    console.log('date :>> ', date);
 
 
+    // 1. Check if the required fields are provided
+    if (date === "") {
+        res.render("/dashboard", { errorMessage: "Please fill all the required fields.", });
+        return; // stops the execution of the function further
+    }
+    // establish date range
+    let from = new Date(date)
+    let to = new Date(date)
+    to.setDate(to.getDate() + 1)
+    console.log('from :>> ', from);
+    console.log('to :>> ', to);
+
+    Queue.find({ date: { $gte: from, $lte: to } }).populate('appointments inProgress appointments_done')
+        .then((queue) => {
+            console.log(queue);
+
+            // console.log(queue[0].appointments[0].code);
+            // console.log(appointment[0].tags);
+
+            res.render('pastQ', { queue: queue })
+        })
+        .catch((err) => {
+            res.render("/dashboard", { errorMessage: `Error during add appointment` });
+        })
+});
 
 
 module.exports = siteRouter;

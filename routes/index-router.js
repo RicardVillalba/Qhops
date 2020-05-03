@@ -4,7 +4,7 @@ const indexRouter = express.Router();
 
 // GET  /
 indexRouter.get('/', (req, res) => {
-  res.render('index', { title: 'Express basic auth' })
+  res.render('index', { title: 'Express basic auth', layout:false })
 })
 
 

@@ -1,17 +1,45 @@
-<h1>QHOPS</h1>
-<p>Welcome to LOGIN PAGE</p>
+<!doctype html>
+<html lang="en">
 
-<form action='/auth/login' method='POST'>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <label for=''>Email</label>
-    <input type='text' name='email'>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <label for=''>Password</label>
-    <input type='text' name='password'>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
 
-    <button type='submit'>Submit</button>
-</form>
+    <title>QHOPS</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
 
+<body>
+    </div>
+    <div class="form">
+        <form action='/auth/login' method='POST'>
+            <div class="form-title">
+                <h3>Login</h3>
+            </div>
+            <div class="formbox">
+                <label for=''>Email</label>
+                <input type='text' name='email'>
+            </div>
+            <div class="formbox">
+                <label for=''>Password</label>
+                <input type='text' name='password'>
+            </div>
+            <div class="button">
+                <button type='submit' class="black-button">Submit</button>
+            </div>
+            <a href="/auth/signup">
+        <button class="login-submit-button">signup</button>
+      </a>
+        </form>
+    </div>
+</body>
 {{!-- Error message display --}}
 {{#if errorMessage}}
 <div class="error-message"> {{errorMessage}} </div>

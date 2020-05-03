@@ -7,7 +7,7 @@ const queueSchema = new Schema({
     appointments: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
     inProgress: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
     appointments_done: [{ type: Schema.Types.ObjectId, ref: "Appointment" }],
-    // roomId: String ????
+    roomId: String,
     nurseId: Schema.Types.ObjectId,
     date: Date,
     capacity: Number, //      ( numSpots*workingHours )

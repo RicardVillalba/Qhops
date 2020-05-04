@@ -76,7 +76,6 @@ siteRouter.get('/dashboard', isLoggedIn, (req, res, next) => {
 
         })
         .then((createdQ) => {
-            console.log(createdQ);
             res.render('dashboard', { queue: createdQ })
         })
         .catch((err) => next(err));
@@ -120,7 +119,6 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
 
         Appointment.create({ code, fName, lName, email, tags, isUrgent, status })
             .then((appointment) => {
-                console.log(appointment._id);
 
                 // 3. push the appointment _id into Queue deppending of the status
 
@@ -128,17 +126,16 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
 
 
                 function addAppointmentToQueue(responseObj, appointmentObj) {
-                    let today = new Date()
                     const appointmentTypes = {
                         waiting: "appointments",
                         attending: "inProgress",
                         attended: "appointments_done"
                     }
                     const { status } = appointmentObj; // 'waiting', 'attending', 'attended'
-                    const typeOfAppointment = appointmentTypes[status]; // appointmentTypes['waiting']
-                    // appointmentTypes['waiting'] --> typeOfAppointment = 'appointments'
-                    // appointmentTypes['attending'] --> typeOfAppointment = 'inProgress'
-                    // appointmentTypes['attended'] --> typeOfAppointment = 'appointments_done'
+                    const typeOfQueue = appointmentTypes[status]; // appointmentTypes['waiting']
+                    // appointmentTypes['waiting'] --> typeOfQueue = 'appointments'
+                    // appointmentTypes['attending'] --> typeOfQueue = 'inProgress'
+                    // appointmentTypes['attended'] --> typeOfQueue = 'appointments_done'
 
                     var start = new Date();
                     start.setHours(0, 0, 0, 0);
@@ -152,90 +149,25 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
                     Queue.find({ date: { $gte: start, $lte: end } })
                         .then((queue) => {
                             if (queue[0]) { // If the queue exist add appointment id to the corresponding array
-                                let appointmentsArray = queue[0][typeOfAppointment]
+                                let appointmentsArray = queue[0][typeOfQueue]
+                                // queue[0].appointments
                                 appointmentsArray.push(appointmentObj._id)
 
-                                return Queue.findByIdAndUpdate(queue[0]._id, { [typeOfAppointment]: appointmentsArray })
+                                return Queue.findByIdAndUpdate(queue[0]._id, { [typeOfQueue]: appointmentsArray })
 
                             } else { // Else create queue and then add appointment id to the corresponding array
-                                const newQueue = { ...queueObj, [typeOfAppointment]: [appointmentObj._id] }
+                                const newQueue = { ...queueObj, [typeOfQueue]: [appointmentObj._id] }
                                 return Queue.create(newQueue);
                             }
-
                         })
                         .then((queue) => {
                             // 4. When the appointment is created, redirect (we choose - add form)
                             responseObj.redirect("add-appointment");
-                            console.log(queue)
                         })
                         .catch((err) => next(err));
                 }
 
                 addAppointmentToQueue(res, appointment)
-
-
-
-                // if (appointment.status === 'waiting') {
-                //     Queue.find({ date: { $gte: todayString } })
-                //         .then((queue) => {
-                //             // console.log(queue[0].appointments);
-                //             let appointmentsArray = queue[0].appointments
-                //             // console.log(appointmentsArray);
-                //             appointmentsArray.push(appointment._id)
-                //             // console.log(appointmentsArray);
-
-                //             return Queue.findByIdAndUpdate(queue[0]._id, { appointments: appointmentsArray })
-                //         })
-                //         .then((queue) => {
-                //             // 4. When the appointment is created, redirect (we choose - add form)
-                //             res.redirect("add-appointment");
-                //             console.log(queue)
-                //         })
-                //         .catch((err) => next(err));
-                // }
-
-                // else if (appointment.status === 'attending') {
-
-                //     // push the appointment _id into queue.inProgress[]
-                //     Queue.find({ date: { $gte: todayString } })
-                //         .then((queue) => {
-                //             // console.log(queue[0].inProgress);
-                //             let inProgressArray = queue[0].inProgress
-                //             // console.log(inProgressArray);
-                //             inProgressArray.push(appointment._id)
-                //             // console.log(inProgressArray);
-
-                //             return Queue.findByIdAndUpdate(queue[0]._id, { inProgress: inProgressArray })
-                //         })
-                //         .then((queue) => {
-                //             // 4. When the appointment is created, redirect (we choose - add form)
-                //             res.redirect("add-appointment");
-                //             console.log(queue)
-                //         })
-                //         .catch((err) => next(err));
-
-
-                // }
-                // else if (appointment.status === 'attended') {
-
-                //     // push the appointment _id into queue.appointments_done[]
-                //     Queue.find({ date: { $gte: todayString } })
-                //         .then((queue) => {
-                //             // console.log(queue[0].appointments_done);
-                //             let appointments_doneArray = queue[0].appointments_done
-                //             // console.log(appointments_doneArray);
-                //             appointments_doneArray.push(appointment._id)
-                //             // console.log(appointments_doneArray);
-
-                //             return Queue.findByIdAndUpdate(queue[0]._id, { appointments_done: appointments_doneArray })
-                //         })
-                //         .then((queue) => {
-                //             // 4. When the appointment is created, redirect (we choose - add form)
-                //             res.redirect("add-appointment");
-                //             console.log(queue)
-                //         })
-                //         .catch((err) => next(err));
-                // }
             })
             .catch((err) => {
                 res.render("add-appointment", { errorMessage: `Error during add appointment` });
@@ -273,12 +205,7 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
                 }) // update the appointments array to remove the moved appointment
                 .then((queue) => {
                     console.log('queue after update :>> ', queue);
-                    function arrayDel(appointment) {
-                        return appointment != id
-                    }
-                    queue.appointments = queue.appointments.filter(arrayDel);
-                    //return queue.save()
-                    return Queue.findByIdAndUpdate(todayQ._id, {$pull:{appointments:id} })
+                    return Queue.findByIdAndUpdate(queue._id, { $pull: { appointments: id } })
 
                 })
                 // 2. When the appointment is updated, redirect
@@ -293,19 +220,64 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
 })
 
 // DELETE APPOINTMENT
-// get         '/dashboard/delete/:id'       
-siteRouter.get('/dashboard/delete/:id', isLoggedIn, (req, res, next) => {
-    const { id } = req.params;
+// get         '/dashboard/delete/:id/:status'       
+siteRouter.get('/dashboard/delete/:id/:status', isLoggedIn, (req, res, next) => {
+    const { id, status } = req.params;
+
 
     // 1. Search  appointment in AppointmentsDB to be deleted.
     Appointment.findByIdAndRemove(id)
         .then((appointment) => {
-            res.redirect("/dashboard");       
+            res.redirect("/dashboard");
+            return
         })
-        .catch((err) => {
-            res.render("/dashboard", { errorMessage: `Error during delete appointment` });
-        });
+
+        // update the appointments array to remove the moved appointment
+        .then(() => {
+
+            var start = new Date();
+            start.setHours(0, 0, 0, 0);
+            var end = new Date();
+            end.setHours(23, 59, 59, 999);
+
+            console.log('from :>> ', start);
+            console.log('to :>> ', end);
+
+            Queue.find({ date: { $gte: start, $lte: end } })
+                .then((queue) => {
+                    const appointmentTypes = {
+                        waiting: "appointments",
+                        attending: "inProgress",
+                        attended: "appointments_done"
+                    }
+                    const typeOfQueue = appointmentTypes[status]; // appointmentTypes['waiting']
+                    // appointmentTypes['waiting'] --> typeOfQueue = 'appointments'
+                    // appointmentTypes['attending'] --> typeOfQueue = 'inProgress'
+                    // appointmentTypes['attended'] --> typeOfQueue = 'appointments_done'
+
+                    // console.log('found queue :>> ', queue);
+                    // console.log('found status :>> ', status);
+                    // // console.log('found typeOfQueue :>> ', typeOfQueue);
+                    // console.log('found id :>> ', id);
+
+                    function arrayDel(appointment) {
+                        return appointment != id
+                    }
+
+                    queue[0][typeOfQueue] = queue[0][typeOfQueue].filter(arrayDel);
+                    return queue[0].save()
+                    //return Queue.findByIdAndUpdate(queue[0]._id, { $pull: { typeOfQueue: id } })
+
+                })
+                .catch((err) => {
+                    res.render("/dashboard", { errorMessage: `Error during delete appointment` });
+                })
+
+        })
 })
+
+
+
 // UPDATE APPOINTMENT, CHANGE STATUS TO ATTENDING (TO DONE QUEUE)
 // GET         '/dashboard/done/:id'       
 siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
@@ -314,21 +286,16 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
     // 1. Search  appointment in DB to change status.
     Appointment.findByIdAndUpdate(id, { status: 'attended' })
         .then((appointment) => {
-            // console.log(appointment);
 
             return appointment
         })
         .then((appointment) => {
-            // console.log(appointment)
             // push the appointment _id into queue.appointments_done[]
             Queue.find({ date: { $gte: todayString } })
                 .then((queue) => {
                     const todayQ = queue[0]
-                    // console.log(todayQ.inProgress);
                     let appointments_doneArray = todayQ.appointments_done
-                    // console.log(appointments_doneArray);
                     appointments_doneArray.push(appointment._id)
-                    // console.log(appointments_doneArray);
 
                     return Queue.findByIdAndUpdate(todayQ._id, { appointments_done: appointments_doneArray })
 
@@ -338,9 +305,6 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
                     function arrayDel(appointment) {
                         return appointment != id
                     }
-                    // console.log(typeof appointment._id, appointment._id);
-                    // console.log(typeof appointment._id != id);
-                    // console.log(typeof id, id);
 
                     let updatedInProgressArray = queue.inProgress.filter(arrayDel);
                     console.log('updatedinProgressArray :>> ', updatedInProgressArray);
@@ -365,11 +329,6 @@ siteRouter.get('/publicQ', isQueue, (req, res, next) => {
 
     todayQueue.populate('appointments inProgress appointments_done')
         .then((queue) => {
-            // console.log(queue);
-
-            // console.log(queue[0].appointments[0].code);
-            // console.log(appointment[0].tags);
-
             res.render('publicQ', { queue: queue })
         })
         .catch((err) => next(err));

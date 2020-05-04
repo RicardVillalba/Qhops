@@ -11,8 +11,8 @@ const Schema = mongoose.Schema;
 
 let today = new Date()
 let todayString = today.toLocaleDateString()
-console.log(todayString);
-let todayQueue = Queue.find({ date: { $gte: todayString } })
+console.log(todayString, today);
+let todayQueue = Queue.find({ date: { $gte: today } }) //comment with Uros why the date doesn't resolve properly
 
 // Middleware function - checks if there is aQueue{} for today 
 // if it doesnt exists it creates one.
@@ -27,9 +27,10 @@ const queueObj = {
     patientsServed: '',
     avgTime: '', //   ( timepast / patients_Served )
 }
+
 // how to avoid runing this function every time we enter dashboard?
 function isQueue(req, res, next) {
-    const todayQueue = Queue.find({ date: { $gte: todayString } })
+    const todayQueue = Queue.find({ date: { $gte: today } })
         .then((queue) => {
             // console.log('queue :>> ', queue[0]);
             if (queue[0]) {
@@ -42,7 +43,6 @@ function isQueue(req, res, next) {
                     })
             }
         })
-
 }
 
 
@@ -57,16 +57,27 @@ function isLoggedIn(req, res, next) {
 
 // ACCESS DASHBOARD
 // GET         '/dashboard'       
-siteRouter.get('/dashboard', isLoggedIn, isQueue, (req, res, next) => {
+siteRouter.get('/dashboard', isLoggedIn, (req, res, next) => {
+    var start = new Date();
+    start.setHours(0, 0, 0, 0);
 
-    todayQueue.populate('appointments inProgress appointments_done')
+    var end = new Date();
+    end.setHours(23, 59, 59, 999);
+
+    Queue.find({ date: { $gte: start, $lte: end } }) //comment with Uros why the date doesn't resolve properly
+        .populate('appointments inProgress appointments_done')
         .then((queue) => {
-            // console.log(queue);
+            if (queue[0]) {
+                // res.render('dashboard', { queue: queue })
+                return queue
+            } else {
+                return Queue.create(queueObj)
+            }
 
-            // console.log(queue[0].appointments[0].code);
-            // console.log(appointment[0].tags);
-
-            res.render('dashboard', { queue: queue })
+        })
+        .then((createdQ) => {
+            console.log(createdQ);
+            res.render('dashboard', { queue: createdQ })
         })
         .catch((err) => next(err));
 });
@@ -74,7 +85,7 @@ siteRouter.get('/dashboard', isLoggedIn, isQueue, (req, res, next) => {
 // ACCES ADD APPOINTMENT FORM
 
 // GET         '/add-appointment'       
-siteRouter.get('/add-appointment', isLoggedIn, isQueue, (req, res, next) => {
+siteRouter.get('/add-appointment', isLoggedIn, (req, res, next) => {
     res.render('add-appointment');
 })
 
@@ -97,8 +108,6 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
             return next(error)
         }
 
-
-
         // 2. Create new appointment in DB, saving the given fields.
 
         console.log('values to dB--->', code, fName, lName, email, tagsList, isUrgent, status);
@@ -117,58 +126,116 @@ siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
 
                 // push the appointment _id into queue.appointments[]
 
-                if (appointment.status === 'waiting') {
-                    Queue.find({ date: { $gte: todayString } })
-                        .then((queue) => {
-                            // console.log(queue[0].appointments);
-                            let appointmentsArray = queue[0].appointments
-                            // console.log(appointmentsArray);
-                            appointmentsArray.push(appointment._id)
-                            // console.log(appointmentsArray);
 
-                            return Queue.findByIdAndUpdate(queue[0]._id, { appointments: appointmentsArray })
+                function addAppointmentToQueue(responseObj, appointmentObj) {
+                    let today = new Date()
+                    const appointmentTypes = {
+                        waiting: "appointments",
+                        attending: "inProgress",
+                        attended: "appointments_done"
+                    }
+                    const { status } = appointmentObj; // 'waiting', 'attending', 'attended'
+                    const typeOfAppointment = appointmentTypes[status]; // appointmentTypes['waiting']
+                    // appointmentTypes['waiting'] --> typeOfAppointment = 'appointments'
+                    // appointmentTypes['attending'] --> typeOfAppointment = 'inProgress'
+                    // appointmentTypes['attended'] --> typeOfAppointment = 'appointments_done'
+
+                    var start = new Date();
+                    start.setHours(0, 0, 0, 0);
+
+                    var end = new Date();
+                    end.setHours(23, 59, 59, 999);
+
+                    console.log('from :>> ', start);
+                    console.log('to :>> ', end);
+
+                    Queue.find({ date: { $gte: start, $lte: end } })
+                        .then((queue) => {
+                            if (queue[0]) { // If the queue exist add appointment id to the corresponding array
+                                let appointmentsArray = queue[0][typeOfAppointment]
+                                appointmentsArray.push(appointmentObj._id)
+
+                                return Queue.findByIdAndUpdate(queue[0]._id, { [typeOfAppointment]: appointmentsArray })
+
+                            } else { // Else create queue and then add appointment id to the corresponding array
+                                const newQueue = { ...queueObj, [typeOfAppointment]: [appointmentObj._id] }
+                                return Queue.create(newQueue);
+                            }
+
                         })
-                        .then((queue) => console.log(queue))
+                        .then((queue) => {
+                            // 4. When the appointment is created, redirect (we choose - add form)
+                            responseObj.redirect("add-appointment");
+                            console.log(queue)
+                        })
                         .catch((err) => next(err));
                 }
 
-                else if (appointment.status === 'attending') {
-
-                    // push the appointment _id into queue.inProgress[]
-                    Queue.find({ date: { $gte: todayString } })
-                        .then((queue) => {
-                            // console.log(queue[0].inProgress);
-                            let inProgressArray = queue[0].inProgress
-                            // console.log(inProgressArray);
-                            inProgressArray.push(appointment._id)
-                            // console.log(inProgressArray);
-
-                            return Queue.findByIdAndUpdate(queue[0]._id, { inProgress: inProgressArray })
-                        })
-                        .then((queue) => console.log(queue))
-                        .catch((err) => next(err));
+                addAppointmentToQueue(res, appointment)
 
 
-                }
-                else if (appointment.status === 'attended') {
 
-                    // push the appointment _id into queue.appointments_done[]
-                    Queue.find({ date: { $gte: todayString } })
-                        .then((queue) => {
-                            // console.log(queue[0].appointments_done);
-                            let appointments_doneArray = queue[0].appointments_done
-                            // console.log(appointments_doneArray);
-                            appointments_doneArray.push(appointment._id)
-                            // console.log(appointments_doneArray);
+                // if (appointment.status === 'waiting') {
+                //     Queue.find({ date: { $gte: todayString } })
+                //         .then((queue) => {
+                //             // console.log(queue[0].appointments);
+                //             let appointmentsArray = queue[0].appointments
+                //             // console.log(appointmentsArray);
+                //             appointmentsArray.push(appointment._id)
+                //             // console.log(appointmentsArray);
 
-                            return Queue.findByIdAndUpdate(queue[0]._id, { appointments_done: appointments_doneArray })
-                        })
-                        .then((queue) => console.log(queue))
-                        .catch((err) => next(err));
-                }
+                //             return Queue.findByIdAndUpdate(queue[0]._id, { appointments: appointmentsArray })
+                //         })
+                //         .then((queue) => {
+                //             // 4. When the appointment is created, redirect (we choose - add form)
+                //             res.redirect("add-appointment");
+                //             console.log(queue)
+                //         })
+                //         .catch((err) => next(err));
+                // }
 
-                // 4. When the appointment is created, redirect (we choose - add form)
-                res.redirect("add-appointment");
+                // else if (appointment.status === 'attending') {
+
+                //     // push the appointment _id into queue.inProgress[]
+                //     Queue.find({ date: { $gte: todayString } })
+                //         .then((queue) => {
+                //             // console.log(queue[0].inProgress);
+                //             let inProgressArray = queue[0].inProgress
+                //             // console.log(inProgressArray);
+                //             inProgressArray.push(appointment._id)
+                //             // console.log(inProgressArray);
+
+                //             return Queue.findByIdAndUpdate(queue[0]._id, { inProgress: inProgressArray })
+                //         })
+                //         .then((queue) => {
+                //             // 4. When the appointment is created, redirect (we choose - add form)
+                //             res.redirect("add-appointment");
+                //             console.log(queue)
+                //         })
+                //         .catch((err) => next(err));
+
+
+                // }
+                // else if (appointment.status === 'attended') {
+
+                //     // push the appointment _id into queue.appointments_done[]
+                //     Queue.find({ date: { $gte: todayString } })
+                //         .then((queue) => {
+                //             // console.log(queue[0].appointments_done);
+                //             let appointments_doneArray = queue[0].appointments_done
+                //             // console.log(appointments_doneArray);
+                //             appointments_doneArray.push(appointment._id)
+                //             // console.log(appointments_doneArray);
+
+                //             return Queue.findByIdAndUpdate(queue[0]._id, { appointments_done: appointments_doneArray })
+                //         })
+                //         .then((queue) => {
+                //             // 4. When the appointment is created, redirect (we choose - add form)
+                //             res.redirect("add-appointment");
+                //             console.log(queue)
+                //         })
+                //         .catch((err) => next(err));
+                // }
             })
             .catch((err) => {
                 res.render("add-appointment", { errorMessage: `Error during add appointment` });
@@ -209,19 +276,14 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
                     function arrayDel(appointment) {
                         return appointment != id
                     }
-                    // console.log(typeof appointment._id, appointment._id);
-                    // console.log(typeof appointment._id != id);
-                    // console.log(typeof id, id);
+                    queue.appointments = queue.appointments.filter(arrayDel);
+                    //return queue.save()
+                    return Queue.findByIdAndUpdate(todayQ._id, {$pull:{appointments:id} })
 
-                    let updatedAppointmentsArray = queue.appointments.filter(arrayDel);
-                    console.log('updatedAppointmentsArray :>> ', updatedAppointmentsArray);
-                    return Queue.findByIdAndUpdate(queue._id, { appointments: updatedAppointmentsArray })
                 })
+                // 2. When the appointment is updated, redirect
+                .then((data) => res.redirect("/dashboard"))
                 .catch((err) => next(err));
-
-            // 2. When the appointment is updated, redirect
-            res.redirect("/dashboard");
-
         })
         .catch((err) => {
             res.render("/dashboard", {
@@ -238,46 +300,12 @@ siteRouter.get('/dashboard/delete/:id', isLoggedIn, (req, res, next) => {
     // 1. Search  appointment in AppointmentsDB to be deleted.
     Appointment.findByIdAndRemove(id)
         .then((appointment) => {
-
-            // 2. Search in Queue model the appointment by id in the inProgress Array to deleted it.
-
-            // Queue.find({ date: { $gte: todayString } })
-            //     .then((queue) => {
-            //         const todayQ = queue[0]
-            //         console.log('todayQ :>> ', todayQ);
-
-            //         // transform the string `id` in an ObjectId
-            //         idObj = mongoose.Types.ObjectId(id)
-            //         // find and delete the appointment.
-            //         return Queue.findOne({ 'inProgress': idObj })
-            //     })
-            //     .then((data) => {
-            //         console.log(data)
-            res.redirect("/dashboard");
-            //     })
-            // .catch((err) => {
-            //     res.render("/dashboard", { errorMessage: `Error during delete appointment` });
-
-            //     // function arrayDel(appointment) {
-            //     //     return appointment != id
-            //     // }
-            //     // // console.log(typeof appointment._id, appointment._id);
-            //     // // console.log(typeof appointment._id != id);
-            //     // // console.log(typeof id, id);
-
-            //     // let updatedAppointmentsArray = queue.appointments.filter(arrayDel);
-            //     // console.log('updatedAppointmentsArray :>> ', updatedAppointmentsArray);
-            //     // return Queue.findByIdAndUpdate(queue._id, { appointments: updatedAppointmentsArray })
-
-            // })
-
-            // 6. When the appointment is created, redirect (we choose - add form)
+            res.redirect("/dashboard");       
         })
         .catch((err) => {
             res.render("/dashboard", { errorMessage: `Error during delete appointment` });
         });
 })
-
 // UPDATE APPOINTMENT, CHANGE STATUS TO ATTENDING (TO DONE QUEUE)
 // GET         '/dashboard/done/:id'       
 siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
@@ -358,7 +386,7 @@ siteRouter.post('/pastQ', isLoggedIn, isQueue, (req, res, next) => {
         res.render("/dashboard", { errorMessage: "Please fill all the required fields.", });
         return; // stops the execution of the function further
     }
-    // establish date range
+    // establish date range from 00:00 of the date to the 00:00 of the next day (24h in total)
     let from = new Date(date)
     let to = new Date(date)
     to.setDate(to.getDate() + 1)

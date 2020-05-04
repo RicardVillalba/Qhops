@@ -1,43 +1,66 @@
-<form action='/add-appointment' method='POST'>
+<!doctype html>
+<html lang="en">
 
-    <label for=''>Name</label>
-    <input type='text' name='fName'>
-    <br>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <label for=''>Last name</label>
-    <input type='text' name='lName'>
-    <br>
-    <label for=''>Email</label>
-    <input type='text' name='email'>
-    <br>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <label for="">Tags</label>
-    <input type="text" name="tags" id="tags-input" />
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
 
-    <!-- THis is hidden input used to send string of tags to server -->
-    <input type="text" id="tags-list" name="tagsList" style="display: none" />
-    <ul id="tags"></ul>
+    <title>QHOPS</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
 
-    <br>
-    <label for=''>Is urgent</label>
-    <input type=checkbox name=isUrgent value='true'>
-    <br>
-    <input type="radio" id="waiting" name="status" value="waiting">
-    <label for="waiting">Waiting</label><br>
+<body>
+    <div class="form-appointment">
+        <form action='/add-appointment' method='POST' >
+            <div class="formbox-appointment">
+                <label for=''>Name</label>
+                <input type='text' name='fName'>
+            </div>
+            <div class="formbox-appointment">
+                <label for=''>L.name</label>
+                <input type='text' name='lName'>
+            </div>
+            <div class="formbox-appointment">
+                <label for=''>Email</label>
+                <input type='text' name='email'>
+            </div>
+            <div class="formbox-appointment">
+                <label for="">Tags</label>
+                <input type="text" name="tags" id="tags-input" />
+            </div>
+            <!-- THis is hidden input used to send string of tags to server -->
+            <input type="text" id="tags-list" name="tagsList" style="display: none" />
+            <ul id="tags"></ul>
 
-    <input type="radio" id="attending" name="status" value="attending">
-    <label for="attending">Attending</label><br>
-
-    <input type="radio" id="attended" name="status" value="attended">
-    <label for="attended">Attended</label>
-    <br>
-
-
-    <button type='submit' id='noenter'>Add Appointment</button>
-</form>
-
-<br>
-<br>
+            <div class="formbox-appointment">
+                <label for=''>Is urgent</label>
+                <input type=checkbox name=isUrgent value='true'>
+            </div>
+            <div class="formbox-appointment-radio">
+            <input type="radio" id="waiting" name="status" value="waiting">
+            <label for="waiting">Waiting</label><br>
+            </div>
+            <div class="formbox-appointment-radio">
+            <input type="radio" id="attending" name="status" value="attending">
+            <label for="attending">Attending</label><br>
+            </div>
+            <div class="formbox-appointment-radio">
+            <input type="radio" id="attended" name="status" value="attended">
+            <label for="attended">Attended</label>
+            </div>
+            <div class="button-add-appointment-form">
+                <button type='submit' id='noenter' class="black-button">Add Appointment</button>
+            </div>
+        </form>
+    </div>
+</body>
 
 {{!-- Error message display --}}
 {{#if errorMessage}}

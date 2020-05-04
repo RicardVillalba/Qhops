@@ -1,9 +1,10 @@
-<br>
+
 <div class="dashboard-table">
-<h1>DASHBOARD</h1>
-<br>
+
+<div class="dashboard-title">
 <h2>Waiting List</h2>
-<br>
+</div>
+
 
 <table>
     <thead>
@@ -13,7 +14,7 @@
             <th>Lastname</th>
             <th>email</th>
             <th>tags</th>
-            <th>Buttons</th>
+            <th></th>
         </tr>
     </thead>
     {{#each queue}}
@@ -31,17 +32,18 @@
 
 
         <td>
+            <div class="dashboard-buttons">
             <a href="/dashboard/to_room/{{this._id}}">
                 <button class="btn">TO ROOM</button>
             </a>
             <a href="/dashboard/delete/{{this._id}}">
-                <button>DELETE</button>
+                <button class="btn">DELETE</button>
             </a>
+            </div>
         </td>
     </tr>
     {{/each}}
     {{/each}}
-
 
 </table>
 
@@ -49,11 +51,12 @@
 <a href="/add-appointment">
     <button>add</button>
 </a>
-</div>
-<br>
 
-<br>
+
+
+<div class="dashboard-title">
 <h2>In Progress List</h2>
+</div>
 <table>
     <thead>
 
@@ -63,7 +66,7 @@
             <th>Lastname</th>
             <th>email</th>
             <th>tags</th>
-            <th>Buttons</th>
+            <th></th>
         </tr>
     </thead>
     {{#each queue}}
@@ -81,24 +84,25 @@
 
 
         <td>
+            <div class="dashboard-buttons">
             <a href="/dashboard/to_room/{{this._id}}">
-                <button>TO ROOM</button>
+                <button class="btn">TO ROOM</button>
             </a>
             <a href="/dashboard/delete/{{this._id}}">
-                <button>DELETE</button>
+                <button class="btn">DELETE</button>
             </a>
+            </div>
         </td>
     </tr>
     {{/each}}
     {{/each}}
 
-    <br>
-
 
 </table>
 
-<br>
+<div class="dashboard-title">
 <h2>Done List</h2>
+</div>
 <table>
     <thead>
 
@@ -108,7 +112,7 @@
             <th>Lastname</th>
             <th>email</th>
             <th>tags</th>
-            <th>Buttons</th>
+            <th></th>
         </tr>
     </thead>
     {{#each queue}}
@@ -137,7 +141,10 @@
     {{/each}}
     {{/each}}
 
-    <br>
-
+<div class="add-button">
 </table>
+<a href="/add-appointment">
+    <button class="button-add-appointment">add</button>
+</a>
 </div>
+

@@ -105,9 +105,7 @@ html {
   height: 100%;
 }
 
-body {
-  height: 100%;
-}
+
 ol,
 ul {
   list-style: none;
@@ -154,10 +152,14 @@ body {
   }
 }
 
+.prevent-overflow {
+  overflow: hidden;
+}
+
 .container-fluid {
   background: transparent;
   margin-left: 0%;
-  margin-right: 0%;
+  margin-right: 7%;
   margin-top: 7%;
   margin-bottom: 5%;
   font-size: 95%;
@@ -179,12 +181,15 @@ body {
 }
 
 .navbar-button {
-  margin-right: 0%;
+  margin-right: 15%;
+  margin-top: 5%;
+  font-size: 90%;
+  padding: 0%;
 }
 
 .form {
   width: 100%;
-  height: 50%;
+  height: 70%;
   margin-top: 15%;
   margin-bottom: 90%;
   display: flex;
@@ -196,7 +201,21 @@ body {
   font-family: "Raleway", sans-serif;
 }
 
-.form-title{
+.form-signup {
+  width: 100%;
+  height: 43%;
+  margin-top: 15%;
+  margin-bottom: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  font-family: "Raleway", sans-serif;
+}
+
+.form-title {
   margin-left: 10%;
   margin-right: 21%;
   margin-bottom: 15%;
@@ -206,7 +225,6 @@ body {
   align-items: center;
   justify-content: flex-end;
   align-content: center;
-
 }
 
 .formbox {
@@ -215,9 +233,23 @@ body {
   margin-bottom: 7%;
 }
 
+.form-login {
+  width: 100%;
+  height: 60%;
+  margin-top: 0%;
+  margin-bottom: 20%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  font-family: "Raleway", sans-serif;
+}
+
 input[type="text"] {
   border: none;
-  border-bottom: 1px solid black;
+  border-bottom: 0.5px solid black;
 }
 
 .button {
@@ -235,6 +267,13 @@ input[type="text"] {
   font-family: "Raleway", sans-serif;
 }
 
+.signup-button {
+  margin-right: 36%;
+  margin-top: 7%;
+  font-size: 90%;
+  padding: 0%;
+}
+
 .black-button {
   color: white;
 }
@@ -250,12 +289,102 @@ input[type="text"] {
   align-content: center;
 }
 
-.dashboard-table {
+.form-appointment {
+  width: 100%;
+  height: 60%;
+  margin-top: 5%;
+  margin-bottom: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
   font-family: "Raleway", sans-serif;
 }
 
-a {
-  color: #00b7ff;
+.formbox-appointment {
+  margin-left: 5%;
+  margin-right: 4%;
+  margin-bottom: 7%;
+}
+
+.formbox-appointment-radio {
+  margin-left: 5%;
+  margin-right: 4%;
+  margin-bottom: 3%;
+}
+
+.button-add-appointment {
+  width: 18%;
+  height: 6%;
+  color: white;
+  background-color: black;
+  margin-top: 10%;
+  margin-left: 0%;
+  margin-right: 50%;
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  font-family: "Raleway", sans-serif;
+}
+
+.button-add-appointment-form {
+  width: 75%;
+  height: 18%;
+  color: white;
+  background-color: black;
+  margin-top: 10%;
+  margin-left: 3%;
+  margin-right: 50%;
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  font-family: "Raleway", sans-serif;
+}
+
+.dashboard-table {
+  font-family: "Raleway", sans-serif;
+  margin-left: 8%;
+  margin-right: 8%;
+  font-size: 70%;
+  height: 70%;
+}
+.dashboard-title {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  border-bottom: 0.5px solid black;
+  margin-right: 5%;
+}
+
+table {
+  width: 100%;
+}
+
+th {
+  height: 30%;
+  text-align: left;
+  vertical-align: bottom;
+}
+
+.dashboard-buttons {
+  margin-right: 10%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+.btn {
+  font-size: 70%;
+  padding: 0%;
 }
 
 .logo {

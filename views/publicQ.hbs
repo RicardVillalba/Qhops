@@ -1,0 +1,50 @@
+<br>
+<h2>JUST CALLED IN (TOP 5 - In Progress List)</h2>
+<table>
+    <thead>
+
+        <tr>
+            <th>code</th>
+        </tr>
+    </thead>
+    {{#each queue}}
+    {{#each inProgress}}
+
+
+    <tr>
+        <td>{{this.code}}</td>
+    </tr>
+    {{/each}}
+    {{/each}}
+
+    <br>
+
+
+</table>
+<br>
+<h1>PUBLIC QUEUE</h1>
+<br>
+<h2>Waiting List</h2>
+<br>
+
+<table>
+    <thead>
+        <tr>
+            <th>code</th>
+        </tr>
+    </thead>
+    {{#each queue}}
+    {{#each appointments}}
+
+
+    <tr>
+        <td>{{this.code}}</td>
+    </tr>
+    {{/each}}
+    {{/each}}
+
+</table>
+
+<br>
+
+

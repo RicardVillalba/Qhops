@@ -2,6 +2,11 @@ const express = require("express");
 const authRouter = express.Router();
 const Admin = require("./../models/admin-model");
 const Appointment = require("./../models/appointment-model")
+const Queue = require("./../models/queue-model")
+const Room = require("./../models/room-model")
+const Praxis = require("./../models/praxis-model")
+
+
 const bcrypt = require("bcrypt");
 const saltRounds = 12;
 
@@ -12,6 +17,67 @@ function isNotLoggedIn(req, res, next) {
     res.redirect('/dashboard');
   }
 }
+const queueObj = {
+  appointments: [],
+  inProgress: [],
+  appointments_done: [],
+  nurseId: undefined,
+  date: new Date(),
+  capacity: '', //      ( numSpots*workingHours )
+  patientsServed: '',
+  avgTime: '', //   ( timepast / patients_Served )
+}
+const roomObj = {
+  name: 'Room 54',
+  description: 'Treatment room',
+  numSpots: 9,
+  queues: [],
+  spotsOccupied: [],
+}
+const praxisObj = {
+  organizationName: 'Hospital',
+    owner: 'Health Corp',
+    queues: [],
+    rooms: []
+}
+
+function autoAssetsCreate(req, res, next) {
+  var start = new Date();
+  start.setHours(0, 0, 0, 0);
+  var end = new Date();
+  end.setHours(23, 59, 59, 999);
+
+  Queue.find({ date: { $gte: start, $lte: end } })
+    .then((queue) => {
+      if (queue[0]) { return queue }
+      else {
+        Queue.create(queueObj)
+          .then((createdQ) => createdQ)
+      }
+    })
+    .then((data) => Room.find())
+    .then((room) => {
+      console.log(room)
+      if (room[0]) { return room }
+      else {
+        Room.create(roomObj)
+          .then((createdRoom) => createdRoom)
+      }
+    })
+    .then( (data) => Praxis.find())
+    .then((praxis) => {
+      console.log(praxis)
+      if (praxis[0]) { 
+        next()
+        return praxis 
+      }
+      else {
+        Praxis.create(praxisObj)
+          .then((createdPraxis) => next()) //how can we pass it the room and q id's?
+      }
+    })
+}
+
 
 //const zxcvbn = require("zxcvbn");
 
@@ -82,9 +148,11 @@ authRouter.post("/signup", (req, res, next) => {
 });
 
 // GET  '/auth/login'
-authRouter.get("/login", isNotLoggedIn, (req, res) => {
-  res.render("auth-views/login-form");
-});
+authRouter.get("/login", isNotLoggedIn, autoAssetsCreate, (req, res) => {
+  res.render("auth-views/login-form")
+})
+
+
 
 // POST    '/auth/login'
 authRouter.post("/login", (req, res, next) => {

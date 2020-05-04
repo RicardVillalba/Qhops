@@ -17,31 +17,35 @@
 </head> --}}
 
 
-</div class="prevent-overflow">
-<div class="form-login ">
-    <form action='/auth/login' method='POST'>
-        <div class="form-title">
-            <h3>Login</h3>
+<div class="container my-5">
+    <div class="column">
+        <div class="col">
+            <div class="form-login">
+                <form action='/auth/login' method='POST'>
+                    <div class="form-title my-5">
+                        <h3>Login</h3>
+                    </div>
+                    <div class="formbox">
+                        <label for=''>Email</label>
+                        <input type='text' name='email'>
+                    </div>
+                    <div class="formbox my-5">
+                        <label for=''>Password</label>
+                        <input type='text' name='password'>
+                    </div>
+                    <div class="button my-5">
+                        <button type='submit' class="black-button mx-5">Submit</button>
+                    </div>
+                </form>
+                <div class="signup-button my-1">
+                    <a href="/auth/signup">
+                        <button class="signup-button">signup</button>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="formbox">
-            <label for=''>Email</label>
-            <input type='text' name='email'>
-        </div>
-        <div class="formbox">
-            <label for=''>Password</label>
-            <input type='text' name='password'>
-        </div>
-        <div class="button">
-            <button type='submit' class="black-button">Submit</button>
-        </div>
-    </form>
-    <div class="signup-button">
-        <a href="/auth/signup">
-            <button>signup</button>
-        </a>
     </div>
 </div>
-
 {{!-- Error message display --}}
 {{#if errorMessage}}
 <div class="error-message"> {{errorMessage}} </div>

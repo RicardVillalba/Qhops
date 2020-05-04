@@ -17,24 +17,29 @@
 </head>
 
 <body>
-    
-    <div class="form-signup">
-        <form action='/auth/signup' method='POST'>
-        <div class="form-title">
-                <h3>Signup</h3>
+    <div class="container my-5">
+        <div class="column">
+            <div class="col">
+                <div class="form-signup">
+                    <form action='/auth/signup' method='POST'>
+                        <div class="form-title my-5">
+                            <h3>Signup</h3>
+                        </div>
+                        <div class="formbox my-5">
+                            <label for=''>Email</label>
+                            <input type='text' name='email'>
+                        </div>
+                        <div class="formbox my-5">
+                            <label for=''>Password</label>
+                            <input type='text' name='password'>
+                        </div>
+                        <div class="button">
+                            <button type='submit' class="black-button">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-     <div class="formbox">
-                <label for=''>Email</label>
-                <input type='text' name='email'>
-            </div>
-            <div class="formbox">
-                <label for=''>Password</label>
-                <input type='text' name='password'>
-            </div>
-            <div class="button">
-                <button type='submit' class="black-button">Submit</button>
-            </div>
-    </form>
+        </div>
     </div>
 </body>
 {{!-- Error message display --}}

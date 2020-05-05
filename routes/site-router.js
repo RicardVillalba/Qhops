@@ -322,7 +322,7 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
         });
 })
 
-// ACCESS DASHBOARD
+// ACCESS PUBLIC QUEUE
 // GET         '/publicQ'       
 siteRouter.get('/publicQ', (req, res, next) => {
 
@@ -332,6 +332,14 @@ siteRouter.get('/publicQ', (req, res, next) => {
         })
         .catch((err) => next(err));
 });
+
+// ACCESS PROFILE
+// GET         '/profile'       
+siteRouter.get('/profile', (req, res, next) => {
+
+    res.render('profile')
+})
+
 
 // POST          '/pastQ'       
 siteRouter.post('/pastQ', isLoggedIn, (req, res, next) => {

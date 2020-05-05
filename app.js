@@ -25,7 +25,7 @@ const DB_NAME = 'qhopsDB'
 
 
 mongoose
-  .connect(`mongodb://localhost/${DB_NAME}`, {
+  .connect(process.env.MONGODB_URI, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -61,7 +61,7 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // Checks incoming request: if there is a cookie, and if cookie has valid session id
 app.use(
   session({
-    secret: "qmssmq",
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: false,
     store: new MongoStore({

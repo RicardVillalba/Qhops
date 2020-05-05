@@ -1,39 +1,32 @@
-<br>
-<div class="dashboard-table">
-    <h1>DASHBOARD</h1>
-    <br>
-    <br>
-    <h2>Done List</h2>
-    <table>
-        <thead>
+<h1 class="container text-center my-3">Attended Patients</h1>
+<h1 class="container text-center my-3">{{pickedDate}} </h1>
 
+<div class="container dashboard-table table-responsive">
+    <caption>Done list</caption>
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <th>code</th>
-                <th>Name</th>
-                <th>Lastname</th>
-                <th>email</th>
-                <th>tags</th>
-                <th>Buttons</th>
+                <th scope="col">Code</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">email</th>
+                <th scope="col">tags</th>
             </tr>
         </thead>
         {{#each queue}}
         {{#each appointments_done}}
-
-
-        <tr>
-            <td>{{this.code}}</td>
-            <td>{{this.fName}}</td>
-            <td>{{this.lName}}</td>
-            <td>{{this.email}}</td>
-            {{#each this.tags}}
-            <td>{{this}}</td>
-            {{/each}}
-
-        </tr>
+        <tbody>
+            <tr>
+                <th scope="row">{{this.code}}</th>
+                <td>{{this.fName}}</td>
+                <td>{{this.lName}}</td>
+                <td>{{this.email}}</td>
+                {{#each this.tags}}
+                <td>{{this}}</td>
+                {{/each}}
+            </tr>
+        </tbody>
         {{/each}}
         {{/each}}
-
-        <br>
-
     </table>
 </div>

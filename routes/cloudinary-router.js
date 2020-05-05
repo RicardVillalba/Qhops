@@ -4,18 +4,11 @@ const router = express.Router();
 const parser = require("../config/cloudinary");
 
 router.post("/profile-picture", parser.single("photo"), (req, res, next) => {
-  const { title, description, id } = req.body;
   const image_url = req.file.secure_url;
+  const adminId = req.session.currentUser._id;
+  Admin.findByIdAndUpdate(adminId, { "picture.image_url": image_url })
 
-  const profilePicture = new Gif({
-    title,
-    description,
-    image_url,
-  });
-
-  newGif
-    .save()
-    .then(() => res.redirect("/"))
+    .then(() => res.redirect("/profile"))
     .catch((err) => console.log(err));
 });
 

@@ -129,25 +129,28 @@ body {
 }
 
 .first_screen {
+  text-align: center;
+  height: 100vh;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  align-content: stretch;
-  width: 50%;
   animation-name: animatedLogo;
   animation-duration: 4s;
+}
+.img_logo{
+  height: auto;
+  width: 45vw ;
+  max-width: 400px;
 }
 
 @keyframes animatedLogo {
   0% {
     opacity: 0%;
-    width: 40%;
+    
   }
   100% {
     opacity: 100%;
-    width: 50%;
+    
   }
 }
 

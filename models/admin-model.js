@@ -8,6 +8,11 @@ const adminSchema = new Schema({
   phone: String,
   password: String,
   tags: String,
+  picture:{
+    title: String,
+    description: String,
+    image_url: String
+  }
   isBusy: Boolean,
   occupation: {
     type: String, enum: ["nurse", "doctor", "secretary"]

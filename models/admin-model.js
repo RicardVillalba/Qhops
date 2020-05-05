@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -15,11 +14,9 @@ const adminSchema = new Schema({
   }
 });
 
-
 // CREATE MODEL
 //                           admins
 const Admin = mongoose.model('Admin', adminSchema);
-
 
 // EXPORT
 module.exports = Admin;

@@ -20,7 +20,6 @@ const queueObj = {
     appointments: [],
     inProgress: [],
     appointments_done: [],
-    roomId: '1',
     nurseId: undefined,
     date: new Date(),
     capacity: '', //      ( numSpots*workingHours )

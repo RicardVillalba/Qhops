@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -6,10 +5,9 @@ const Schema = mongoose.Schema;
 const praxisSchema = new Schema({
     organizationName: String,
     owner: String,
-    queues: [{ type: ObjectId, ref: "Q" }]
-}
-);
-
+    queues: [{ type: Schema.Types.ObjectId, ref: "Queue" }],
+    rooms: [{ type: Schema.Types.ObjectId, ref: "Room" }]
+});
 
 // CREATE MODEL
 //                             Praxis

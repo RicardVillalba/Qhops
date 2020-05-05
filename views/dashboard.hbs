@@ -76,6 +76,7 @@
                         </tr>
                     </thead>
                     {{#each queue}}
+
                     <tr>
                         {{#each inProgress}}
                         <td>{{this.roomId}}</td>
@@ -94,7 +95,7 @@
                                 <a href="/dashboard/done/{{this._id}}">
                                     <button class="btn">DONE</button>
                                 </a>
-                                <a href="/dashboard/delete/{{this._id}}//{{this.status}}">
+                                <a href="/dashboard/delete/{{this._id}}/{{this.status}}/{{../_id}}">
                                     <button class="btn">DELETE</button>
                                 </a>
                             </div>

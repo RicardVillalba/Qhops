@@ -349,6 +349,20 @@ siteRouter.get('/profile', (req, res, next) => {
 siteRouter.post('/pastQ', isLoggedIn, (req, res, next) => {
     const { date } = req.body;
     console.log('date :>> ', date);
+    
+    let pickedDate = new Date(date)
+    var dd = pickedDate.getDate();
+
+    var mm = pickedDate.getMonth() + 1;
+    var yyyy = pickedDate.getFullYear();
+    if (dd < 10) {
+        dd = '0' + dd;
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm;
+    }
+    pickedDate = mm + '-' + dd + '-' + yyyy;
 
 
     // 1. Check if the required fields are provided
@@ -370,7 +384,7 @@ siteRouter.post('/pastQ', isLoggedIn, (req, res, next) => {
             // console.log(queue[0].appointments[0].code);
             // console.log(appointment[0].tags);
 
-            res.render('pastQ', { queue: queue })
+            res.render('pastQ', { queue: queue, pickedDate })
         })
         .catch((err) => {
             res.render("/dashboard", { errorMessage: `Error during add appointment` });

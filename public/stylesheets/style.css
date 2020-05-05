@@ -130,11 +130,11 @@ body {
 
 .first_screen {
   display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	align-content: stretch;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
   width: 50%;
   animation-name: animatedLogo;
   animation-duration: 4s;
@@ -151,10 +151,6 @@ body {
   }
 }
 
-.prevent-overflow {
-  overflow: hidden;
-}
-
 .container-fluid {
   background: transparent;
   font-size: 95%;
@@ -163,7 +159,6 @@ body {
   justify-content: flex-end;
   font-family: "Raleway", sans-serif;
 }
-
 
 .container-fluid-logo {
   background: transparent;
@@ -185,7 +180,7 @@ body {
 .form {
   width: 100%;
   height: 70%;
-  
+
   margin-bottom: 90%;
   display: flex;
   flex-wrap: wrap;
@@ -199,7 +194,7 @@ body {
 .form-signup {
   width: 100%;
   height: 43%;
- 
+
   margin-bottom: 90%;
   display: flex;
   flex-wrap: wrap;
@@ -211,7 +206,6 @@ body {
 }
 
 .form-title {
-
   font-size: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -220,15 +214,10 @@ body {
   align-content: center;
 }
 
-.formbox {
- 
-}
-
 .form-login {
   width: 100%;
   height: 60%;
- 
-  
+
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -288,7 +277,7 @@ input[type="text"] {
 .form-appointment {
   width: 100%;
   height: 60%;
-  
+
   margin-bottom: 90%;
   display: flex;
   flex-direction: column;
@@ -343,13 +332,12 @@ input[type="text"] {
 
 .dashboard-table {
   font-family: "Raleway", sans-serif;
- 
+
   font-size: 70%;
   height: 70%;
 }
 .dashboard-title {
   border-bottom: 0.5px solid black;
-  
 }
 
 table {
@@ -363,7 +351,6 @@ th {
 }
 
 .dashboard-buttons {
- 
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;

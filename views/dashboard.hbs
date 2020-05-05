@@ -2,8 +2,22 @@
     <div class="row">
         <div class="col-sm col col-lg dashboard-table">
 
+                <form action='/pastQ' method='POST'>
+
+                    <div class="formbox-date">
+                        <input type='date' name='date'>
+                    </div>
+                    <div class="button my-5">
+                        <button type='submit' class="black-button mx-1">Submit</button>
+                    </div>
+                </form>
 
 
+            <div class="add-button">
+                <a href="/add-appointment">
+                    <button>add</button>
+                </a>
+            </div>
             <div class="dashboard-title">
                 <h2>Waiting List</h2>
             </div>
@@ -51,9 +65,7 @@
             </table>
 
 
-            <a href="/add-appointment">
-                <button>add</button>
-            </a>
+
 
 
             <div class="col-sm">
@@ -148,9 +160,8 @@
                     {{/each}}
                     {{/each}}
 
-                    <div class="add-button">
-                </table>
 
+                </table>
             </div>
         </div>
     </div>

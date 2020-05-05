@@ -12,7 +12,7 @@ const adminSchema = new Schema({
     title: String,
     description: String,
     image_url: String
-  }
+  },
   isBusy: Boolean,
   occupation: {
     type: String, enum: ["nurse", "doctor", "secretary"]

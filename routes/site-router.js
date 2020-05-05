@@ -336,8 +336,12 @@ siteRouter.get('/publicQ', (req, res, next) => {
 // ACCESS PROFILE
 // GET         '/profile'       
 siteRouter.get('/profile', (req, res, next) => {
-
-    res.render('profile')
+    console.log('req.session.currentuser :>> ', req.session.currentUser._id);
+    Admin.findById(req.session.currentUser._id)
+        .then((admin) => {
+            console.log(admin)
+            res.render('profile', { admin })
+        })
 })
 
 

@@ -1,14 +1,18 @@
+<h2 class="row my-2 justify-content-center">Dashboard</h2>
 <div class="container">
-
-    <form action='/pastQ' method='POST'>
-
-        <div class="formbox-date">
-            <input type='date' name='date'>
+    <div class="row justify-content-between">
+        <div class="col-4 formbox-date">
+            <form action='/pastQ' method='POST'>
+                <input type='date' name='date'>
+                <button type='submit' class="btn btn-dark p-1 my-2">Submit</button>
+            </form>
         </div>
-        <div class="button-date my-4">
-            <button type='submit' class="black-button">Submit</button>
+        <div class="col-4 text-right">
+            <a href="/appointment">
+                <button type='submit' class="btn btn-outline-dark p-2 my-2">Add Appointment</button>
+            </a>
         </div>
-    </form>
+    </div>
 </div>
 
 <div class="container dashboard-table table-responsive">

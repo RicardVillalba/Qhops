@@ -82,14 +82,14 @@ siteRouter.get('/dashboard', isLoggedIn, (req, res, next) => {
 
 // ACCES ADD APPOINTMENT FORM
 
-// GET         '/add-appointment'       
-siteRouter.get('/add-appointment', isLoggedIn, (req, res, next) => {
+// GET         '/appointment'       
+siteRouter.get('/appointment', isLoggedIn, (req, res, next) => {
     res.render('add-appointment');
 })
 
 // ADD APPOINTMENT
 // POST         '/appointment'       
-siteRouter.post('/add-appointment', isLoggedIn, (req, res, next) => {
+siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
     const { fName, lName, email, tagsList, isUrgent, status } = req.body;
 
     // 1. Check if the required fields are provided
@@ -393,7 +393,7 @@ siteRouter.post('/pastQ', isLoggedIn, (req, res, next) => {
             res.render('pastQ', { queue: queue, pickedDate })
         })
         .catch((err) => {
-            res.render("/dashboard", { errorMessage: `Error during add appointment` });
+            res.render("/dashboard", { errorMessage: `Error loading past Queue` });
         })
 });
 

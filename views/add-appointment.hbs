@@ -18,7 +18,7 @@
 
 <body>
     <div class="form-appointment">
-        <form action='/add-appointment' method='POST' >
+        <form action='/appointment' method='POST'>
             <div class="formbox-appointment">
                 <label for=''>Name</label>
                 <input type='text' name='fName'>
@@ -44,18 +44,18 @@
                 <input type=checkbox name=isUrgent value='true'>
             </div>
             <div class="formbox-appointment-radio">
-            <input type="radio" id="waiting" name="status" value="waiting">
-            <label for="waiting">Waiting</label><br>
+                <input type="radio" id="waiting" name="status" value="waiting">
+                <label for="waiting">Waiting</label><br>
             </div>
             <div class="formbox-appointment-radio">
-            <input type="radio" id="attending" name="status" value="attending">
-            <label for="attending">Attending</label><br>
+                <input type="radio" id="attending" name="status" value="attending">
+                <label for="attending">Attending</label><br>
             </div>
             <div class="formbox-appointment-radio">
-            <input type="radio" id="attended" name="status" value="attended">
-            <label for="attended">Attended</label>
+                <input type="radio" id="attended" name="status" value="attended">
+                <label for="attended">Attended</label>
             </div>
-            <div class="button-add-appointment-form">
+            <div class="butt-form">
                 <button type='submit' id='noenter' class="black-button">Add Appointment</button>
             </div>
         </form>

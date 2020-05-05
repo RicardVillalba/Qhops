@@ -20,7 +20,7 @@ const MongoStore = require("connect-mongo")(session);
 const indexRouter = require('./routes/index-router');
 const authRouter = require('./routes/auth-router');
 const siteRouter = require("./routes/site-router.js");
-
+const cloudinaryRouter = require("./routes/cloudinary-router.js")
 const DB_NAME = 'qhopsDB'
 
 
@@ -80,6 +80,7 @@ app.locals.title = 'Express - Generated with express generator'; //UROS????
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use("/", siteRouter)
+app.use("/",cloudinaryRouter)
 
 
 //ERROR HANDLER

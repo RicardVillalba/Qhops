@@ -324,7 +324,7 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
 
 // ACCESS DASHBOARD
 // GET         '/publicQ'       
-siteRouter.get('/publicQ', isQueue, (req, res, next) => {
+siteRouter.get('/publicQ', (req, res, next) => {
 
     todayQueue.populate('appointments inProgress appointments_done')
         .then((queue) => {
@@ -334,7 +334,7 @@ siteRouter.get('/publicQ', isQueue, (req, res, next) => {
 });
 
 // POST          '/pastQ'       
-siteRouter.post('/pastQ', isLoggedIn, isQueue, (req, res, next) => {
+siteRouter.post('/pastQ', isLoggedIn, (req, res, next) => {
     const { date } = req.body;
     console.log('date :>> ', date);
 

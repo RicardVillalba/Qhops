@@ -11,7 +11,8 @@ const adminSchema = new Schema({
   isBusy: Boolean,
   occupation: {
     type: String, enum: ["nurse", "doctor", "secretary"]
-  }
+  },
+  praxis: [{type: Schema.Types.ObjectId, ref: 'Praxis'}]
 });
 
 // CREATE MODEL

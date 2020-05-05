@@ -36,45 +36,23 @@ const roomObj = {
 }
 const praxisObj = {
   organizationName: 'Hospital',
-    owner: 'Health Corp',
-    queues: [],
-    rooms: []
+  owner: 'Health Corp',
+  queues: [],
+  rooms: []
 }
 
-function autoAssetsCreate(req, res, next) {
-  var start = new Date();
-  start.setHours(0, 0, 0, 0);
-  var end = new Date();
-  end.setHours(23, 59, 59, 999);
+function autoAssetsCreate() {
 
-  Queue.find({ date: { $gte: start, $lte: end } })
+  let queueId, roomId
+
+  return Queue.create(queueObj)
     .then((queue) => {
-      if (queue[0]) { return queue }
-      else {
-        Queue.create(queueObj)
-          .then((createdQ) => createdQ)
-      }
+      queueId = queue._id
+      return Room.create(roomObj)
     })
-    .then((data) => Room.find())
     .then((room) => {
-      console.log(room)
-      if (room[0]) { return room }
-      else {
-        Room.create(roomObj)
-          .then((createdRoom) => createdRoom)
-      }
-    })
-    .then( (data) => Praxis.find())
-    .then((praxis) => {
-      console.log(praxis)
-      if (praxis[0]) { 
-        next()
-        return praxis 
-      }
-      else {
-        Praxis.create(praxisObj)
-          .then((createdPraxis) => next()) //how can we pass it the room and q id's?
-      }
+      roomId = room._id
+      return Praxis.create({ ...praxisObj, queues: [queueId], rooms: [roomId] })
     })
 }
 
@@ -129,12 +107,21 @@ authRouter.post("/signup", (req, res, next) => {
         const salt = bcrypt.genSaltSync(saltRounds);
         const hashedPassword = bcrypt.hashSync(password, salt);
 
-        // 5. Create new admin in DB, saving the encrypted password
-        Admin.create({ email, password: hashedPassword })
-          .then((user) => {
-            // 6. When the admin is created, redirect (we choose - home page)
-            res.redirect("/");
+        autoAssetsCreate()
+          .then((praxis) => {
+            console.log('praxis :>> ', praxis);
+            return Admin.create({ email, password: hashedPassword, praxis: [praxis._id] })
+
+            // 6. When the admin is created, redirect (we choose - home page) 
+
           })
+
+          // 5. Create new admin in DB, saving the encrypted password
+          .then((user) => {
+            res.redirect("/");
+            // creates room, Q, and praxis and returns a pending promise
+          })
+
           .catch((err) => {
             res.render("auth-views/signup-form", {
               errorMessage: `Error during signup`,
@@ -148,8 +135,9 @@ authRouter.post("/signup", (req, res, next) => {
 });
 
 // GET  '/auth/login'
-authRouter.get("/login", isNotLoggedIn, autoAssetsCreate, (req, res) => {
+authRouter.get("/login", isNotLoggedIn, (req, res) => {
   res.render("auth-views/login-form")
+
 })
 
 

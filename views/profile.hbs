@@ -1,21 +1,21 @@
 <div class="container">
     <div class="row">
         <div class="col-sm col-lg dashboard-table">
-
+            <img src="{{admin.picture.image_url}}" class="profile-img" alt="profile_picture">
             <form action="/profile-picture" method="POST" enctype="multipart/form-data">
                 <input type="file" name="photo" />
-                <button type="submit">New GIF</button>
+                <button type="submit" >Update photo</button>
             </form>
-            <img src="{{admin.picture.image_url}}" alt="profile_picture">
+
             <table>
                 <thead>
                     <tr>
-                        <th>code</th>
-                        <th>Name</th>
-                        <th>Lastname</th>
-                        <th>email</th>
-                        <th>tags</th>
-                        <th></th>
+                        <th scope="col">code</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Lastname</th>
+                        <th scope="col">email</th>
+                        <th scope="col">tags</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 {{#each queue}}

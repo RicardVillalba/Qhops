@@ -383,3 +383,11 @@ th {
 .logo {
   width: 90px;
 }
+
+.profile-img {
+  height: auto;
+  width: 20vw;
+  border-radius: 50%;
+  margin-left: 60vw;
+  max-width: 160px;
+}

@@ -1,55 +1,41 @@
-<br>
-<h2>JUST CALLED IN (TOP 5 - In Progress List)</h2>
-<table>
-    <thead>
-
-        <tr>
-            <th>code</th>
-        </tr>
-    </thead>
-    {{#each queue}}
-    {{#each inProgress}}
+<h1 class="container text-center my-3">PUBLIC QUEUE</h1>
 
 
-    <tr>
-        <td>{{this.code}}</td>
-    </tr>
-    {{/each}}
-    {{/each}}
-
-    <br>
-
-
-</table>
-<br>
-<h1>PUBLIC QUEUE</h1>
-<br>
-<h2>Waiting List</h2>
-<br>
-
-    <table class="table table-hover">
+<div class="container dashboard-table table-responsive">
+    <caption>Just called</caption>
+    <table class="table table-hover my-3">
         <thead>
             <tr>
-                <th scope="col">Code</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">email</th>
-                <th scope="col">tags</th>
-                <th scope="col"></th>
+                <th class="text-center" scope="col">code</th>
             </tr>
         </thead>
-    {{#each queue}}
-    {{#each appointments}}
+        <tbody>
+            {{#each queue}}
+            {{#each inProgress}}
+            <tr>
+                <td class="text-center">{{this.code}}</td>
+            </tr>
+            {{/each}}
+            {{/each}}
+        </tbody>
+    </table>
 
+    <caption>Waiting List</caption>
+    <table class="table table-hover my-3">
 
-    <tr>
-        <td>{{this.code}}</td>
-    </tr>
-    {{/each}}
-    {{/each}}
-
-</table>
-
-<br>
-
-
+        <thead>
+            <tr>
+                <th class="text-center" scope="col">Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each queue}}
+            {{#each appointments}}
+            <tr>
+                <td class="text-center">{{this.code}}</td>
+            </tr>
+            {{/each}}
+            {{/each}}
+        </tbody>
+    </table>
+</div>

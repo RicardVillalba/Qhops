@@ -351,6 +351,8 @@ th {
   height: 30%;
   text-align: left;
   vertical-align: bottom;
+  font-size: 1.3em;
+  font-weight: bolder;
 }
 
 .dashboard-buttons {

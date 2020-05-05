@@ -325,10 +325,10 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
 // ACCESS PUBLIC QUEUE
 // GET         '/publicQ'       
 siteRouter.get('/publicQ', (req, res, next) => {
-
+    const today = formatedDate()
     todayQueue.populate('appointments inProgress appointments_done')
         .then((queue) => {
-            res.render('publicQ', { queue: queue })
+            res.render('publicQ', { queue: queue, today })
         })
         .catch((err) => next(err));
 });
@@ -344,13 +344,13 @@ siteRouter.get('/profile', (req, res, next) => {
         })
 })
 
-
-// POST          '/pastQ'       
-siteRouter.post('/pastQ', isLoggedIn, (req, res, next) => {
-    const { date } = req.body;
-    console.log('date :>> ', date);
-    
-    let pickedDate = new Date(date)
+function formatedDate(date) {
+    let pickedDate
+    if (date) {
+        pickedDate = new Date(date)
+    } else {
+        pickedDate = new Date()
+    }
     var dd = pickedDate.getDate();
 
     var mm = pickedDate.getMonth() + 1;
@@ -358,12 +358,18 @@ siteRouter.post('/pastQ', isLoggedIn, (req, res, next) => {
     if (dd < 10) {
         dd = '0' + dd;
     }
-
     if (mm < 10) {
         mm = '0' + mm;
     }
-    pickedDate = mm + '-' + dd + '-' + yyyy;
+    return pickedDate = mm + '-' + dd + '-' + yyyy;
+}
 
+// POST          '/pastQ'       
+siteRouter.post('/pastQ', isLoggedIn, (req, res, next) => {
+    const { date } = req.body;
+
+    //create a variable to pirnt the date in DD-MM-YYYY format
+    let pickedDate = formatedDate(date)
 
     // 1. Check if the required fields are provided
     if (date === "") {

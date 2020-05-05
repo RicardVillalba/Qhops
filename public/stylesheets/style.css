@@ -265,6 +265,16 @@ input[type="text"] {
   color: white;
   background-color: transparent;
   border: transparent;
+  font-size: 90%;
+}
+
+.button-date {
+  text-align: center;
+  height: 50px;
+  width: 181px;
+  color: white;
+  background-color: black;
+  border: transparent;
 }
 
 .login-submit-button {

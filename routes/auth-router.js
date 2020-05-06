@@ -188,7 +188,7 @@ authRouter.get("/logout", (req, res) => {
       res.render("error", { message: "Something went wrong! Yikes!" });
     }
     // Redirect to the page (we choose - home page)
-    res.redirect("/");
+    res.redirect("login");
   });
 });
 

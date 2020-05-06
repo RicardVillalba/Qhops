@@ -70,9 +70,10 @@ app.use(
     }),
   })
 );
-app.use(function(req,res,next){
-  if (req.session.currentUser){
-    app.locals.admin = req.session.currentUser
+app.use(function (req, res, next) {
+  console.log('req.session.currentUser :>> ', req.session.currentUser);
+  if (req.session.currentUser) {
+    res.locals.admin = req.session.currentUser
   }
   next();
 })
@@ -85,7 +86,7 @@ app.locals.title = 'Express - Generated with express generator'; //UROS????
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use("/", siteRouter)
-app.use("/",cloudinaryRouter)
+app.use("/", cloudinaryRouter)
 
 
 //ERROR HANDLER

@@ -39,7 +39,11 @@
             <button class="navbar-button m-1">logout</button>
           </a>
           <a href="/profile">
+            {{#if admin.picture.image_url}}
             <img src="{{admin.picture.image_url}}" class="profile-img-nav" alt="profile_picture">
+            {{else}}
+            <img src="https://img.icons8.com/pastel-glyph/2x/person-male.png" class="profile-img-nav" alt="profile_picture">
+            {{/if}}
           </a>
         </div>
       </div>

@@ -5,6 +5,7 @@ const TokenGenerator = require('tokgen');
 let token = new TokenGenerator();
 const Queue = require('./../models/queue-model')
 const Admin = require('./../models/admin-model')
+const Room = require('./../models/room-model')
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -337,6 +338,20 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
         });
 })
 
+// ACCESS ROOMS
+// GET         '/rooms'       
+siteRouter.get('/rooms', (req, res, next) => {
+    
+    Room.find()
+        .then((room) => {
+            
+            room = room[0]
+            console.log('room :>> ', room);
+            res.render('rooms', { room })
+        })
+        .catch((err) => next(err));
+});
+
 // ACCESS PUBLIC QUEUE
 // GET         '/publicQ'       
 siteRouter.get('/publicQ', (req, res, next) => {
@@ -347,7 +362,7 @@ siteRouter.get('/publicQ', (req, res, next) => {
     var end = new Date();
     end.setHours(23, 59, 59, 999);
 
-    Queue.find({ date: { $gte: start, $lte: end } }) 
+    Queue.find({ date: { $gte: start, $lte: end } })
         .populate('appointments inProgress')
         .then((queue) => {
             console.log('queue :>> ', queue);
@@ -360,10 +375,19 @@ siteRouter.get('/publicQ', (req, res, next) => {
 // GET         '/profile'       
 siteRouter.get('/profile', isLoggedIn, (req, res, next) => {
     console.log('req.session.currentuser :>> ', req.session.currentUser._id);
-    Admin.findById(req.session.currentUser._id)
+    let adminObj
+    Admin.findById(req.session.currentUser._id).populate('praxis')
         .then((admin) => {
-            console.log(admin)
-            res.render('profile',{admin})
+            console.log('room id', admin.praxis[0].rooms[0])
+            adminObj = admin
+            roomId = admin.praxis[0].rooms[0]
+            return Room.findById(roomId)
+
+        })
+        .then((room) => {
+            console.log(room, adminObj)
+            res.render('profile', { adminObj, room })
+
         })
 })
 

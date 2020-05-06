@@ -28,41 +28,36 @@
 
 
 
-<div class="container dashboard-table table-responsive">
-    <table class="table table-hover my-3">
-        <thead>
+<div class="py-5 container dashboard-table table-responsive">
+    <caption>{{adminObj.praxis.0.organizationName}}</caption>
+
+    <table class="table table-sm table-hover">
+        <thead class='bg-light black-text'>
             <tr>
-                <th class="text-center" scope="col"> </th>
+                <th class="text-center" scope="col">Rooms</th>
+                <th class="text-center" scope="col">Name</th>
+                <th class="text-center" scope="col">Description</th>
+                <th class="text-center" scope="col">Number of spots</th>
+                <th class="text-center" scope="col">Spots occupied</th>
+                <th></th>
+
             </tr>
         </thead>
         <tbody>
-
             <tr>
+                <td class="text-center"></td>
+                <td class="text-center">{{room.name}}</td>
+                <td class="text-center">{{room.description}}</td>
+                <td class="text-center"> {{room.numSpots}}</td>
+                <td class="text-center"> {{room.spotsOccupied}}</td>
+                <td>
 
-
+                <a href="/dashboard/to_room/{{this._id}}">
+                            <button class="btn p-1">Edit</button>
+                        </a>
+                </td>
             </tr>
-            <tr>
 
-            </tr>
-        </tbody>
-    </table>
-
-
-    <table class="table table-hover my-3">
-
-        <thead>
-            <tr>
-                <th class="text-center" scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each queue}}
-            {{#each appointments}}
-            <tr>
-                <td class="text-center">{{this.code}}</td>
-            </tr>
-            {{/each}}
-            {{/each}}
         </tbody>
     </table>
 </div>

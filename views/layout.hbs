@@ -33,13 +33,27 @@
           <!-- Links -->
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile">
+                {{#if admin.picture.image_url}}
+                <img src="{{admin.picture.image_url}}" class="profile-img-nav" alt="profile_picture">
+                {{else}}
+                <img src="https://img.icons8.com/pastel-glyph/2x/person-male.png" class="profile-img-nav"
+                  alt="profile_picture">
+                {{/if}}
+              </a>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/dashboard">dashboard</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
+              <a class="nav-link" href="/rooms">rooms<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Pricing</a>
+              <a class="nav-link" href="/publicQ">publicQ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/auth/logout">logout</a>
             </li>
           </ul>
           <!-- Links -->

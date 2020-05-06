@@ -14,13 +14,18 @@
                     <input type="file" name="photo" id="img" style="display:none;" />
                     <label for="img" class="btn btn-dark p-1 my-2">upload image</label>
                     <button type="submit" class="btn btn-dark p-1 my-2">Update photo</button>
-                    <h3 class="text-center"> name: {{name}}</h3>
-                    <h3 class="text-center"> email: {{admin.email}}</h3>
                 </form>
             </div>
         </div>
+        <div class="col-8 mt-5">
+
+            <h3 class="text-left"> Name: {{admin.name}}</h3>
+            <h3 class="text-left"> Phone: {{admin.phone}}</h3>
+            <h3 class="text-left"> email: {{admin.email}}</h3>
+        </div>
     </div>
 </div>
+
 
 
 <div class="container dashboard-table table-responsive">
@@ -33,12 +38,11 @@
         <tbody>
 
             <tr>
-                <td class="text-left">name: {{name}}</td>
+
 
             </tr>
             <tr>
 
-                <td class="text-left">email: {{admin.email}}</td>
             </tr>
         </tbody>
     </table>

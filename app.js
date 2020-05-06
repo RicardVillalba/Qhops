@@ -70,7 +70,12 @@ app.use(
     }),
   })
 );
-
+app.use(function(req,res,next){
+  if (req.session.currentUser){
+    app.locals.admin = req.session.currentUser
+  }
+  next();
+})
 // Checks the response if there is data on req.session
 
 // default value for title local

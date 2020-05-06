@@ -153,6 +153,24 @@ body {
   }
 }
 
+@-webkit-keyframes animatedLogo {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+@-moz-keyframes animatedLogo {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
 .container-fluid {
   background: transparent;
   font-size: 95%;

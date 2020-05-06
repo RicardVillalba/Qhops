@@ -1,48 +1,70 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
-
-    <title>QHOPS</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
-
-<body>
-    <div class="container my-5">
-        <div class="column">
-            <div class="col">
-                <div class="form-signup">
-                    <form action='/auth/signup' method='POST'>
-                        <div class="form-title my-5">
-                            <h3>Signup</h3>
-                        </div>
-                        <div class="formbox my-5">
-                            <label for=''>Email</label>
-                            <input type='text' name='email'>
-                        </div>
-                        <div class="formbox my-5">
-                            <label for=''>Password</label>
-                            <input type='text' name='password'>
-                        </div>
-                        <div class="button">
-                            <button type='submit' class="black-button">Submit</button>
-                        </div>
-                    </form>
-                </div>
+{{!-- Error message display 
+<div class="container my-5">
+    <div class="column">
+        <div class="col">
+            <div class="form-signup">
+                <form action='/auth/signup' method='POST'>
+                    <div class="form-title my-5">
+                        <h3>Signup</h3>
+                    </div>
+                    <div class="formbox my-5">
+                        <label for=''>Email</label>
+                        <input type='text' name='email'>
+                    </div>
+                    <div class="formbox my-5">
+                        <label for=''>Password</label>
+                        <input type='text' name='password'>
+                    </div>
+                    <div class="button">
+                        <button type='submit' class="black-button">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</body>
-{{!-- Error message display --}}
+</div>
+--}}
 {{#if errorMessage}}
 <div class="error-message"> {{errorMessage}} </div>
 {{/if}}
+
+
+<div class="row justify-content-center">
+
+    <div class="col-4">
+        <!-- Default form register -->
+        <form class=" text-right  border-light p-5" action="/auth/signup" method="POST">
+
+            <p class="h5 mb-4 ">Sign up</p>
+
+
+            <!-- First name -->
+            <input type="text" id="defaultRegisterFormFirstName" name='name' class="form-control mb-4" placeholder="First name">
+
+
+
+            <!-- E-mail -->
+            <input type="text" id="defaultRegisterFormEmail" name='email' class="form-control mb-4" placeholder="E-mail">
+            <!-- Phone number -->
+            <input type="text" id="defaultRegisterPhonePassword" name='phone' class="form-control mb-4" placeholder="Phone number"
+                aria-describedby="defaultRegisterFormPhoneHelpBlock">
+            <!-- Password -->
+            <input type="password" id="defaultRegisterFormPassword" name='password' class="form-control" placeholder="Password"
+                aria-describedby="defaultRegisterFormPasswordHelpBlock">
+            <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
+                At least 8 characters and 1 digit
+            </small>
+
+
+
+            <!-- Sign up button -->
+            <button class="btn btn-black text-white py-3 btn-block" type="submit">Sign in</button>
+
+        </form>
+        <!-- Default form register -->
+    </div>
+</div>
+
+
+
+<!-- Material form register -->

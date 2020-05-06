@@ -67,12 +67,12 @@ authRouter.get("/signup", isNotLoggedIn, (req, res) => {
 // // POST    '/auth/signup'
 authRouter.post("/signup", (req, res, next) => {
   // 1. Get the email and password from req.body
-  const { email, password } = req.body;
+  const { name, phone, email, password } = req.body;
   console.log(password);
 
 
   // 2.1 Check if the email and password are provided
-  if (email === "" || password === "") {
+  if (email === "" || password === "" || name === "" || phone === "") {
     res.render("auth-views/signup-form", {
       errorMessage: "email and Password are required.",
     }); console.log(email);
@@ -110,7 +110,7 @@ authRouter.post("/signup", (req, res, next) => {
         autoAssetsCreate()
           .then((praxis) => {
             console.log('praxis :>> ', praxis);
-            return Admin.create({ email, password: hashedPassword, praxis: [praxis._id] })
+            return Admin.create({ email, password: hashedPassword, name, phone, praxis: [praxis._id] })
 
             // 6. When the admin is created, redirect (we choose - home page) 
 

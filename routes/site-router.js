@@ -377,7 +377,7 @@ function formatedDate(date) {
     if (mm < 10) {
         mm = '0' + mm;
     }
-    return pickedDate = mm + '-' + dd + '-' + yyyy;
+    return pickedDate = dd + '-' + mm + '-' + yyyy;
 }
 
 // POST          '/pastQ'       

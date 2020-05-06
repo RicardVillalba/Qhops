@@ -70,12 +70,16 @@ app.use(
     }),
   })
 );
-app.use(function(req,res,next){
-  if (req.session.currentUser){
-    app.locals.admin = req.session.currentUser
+
+//midlewere that creates admin value for all hbs views, if user is logedin
+app.use(function (req, res, next) {
+  console.log('req.session.currentUser :>> ', req.session.currentUser);
+  if (req.session.currentUser) {
+    res.locals.admin = req.session.currentUser
   }
   next();
 })
+
 // Checks the response if there is data on req.session
 
 // default value for title local

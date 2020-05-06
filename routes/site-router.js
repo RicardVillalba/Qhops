@@ -341,9 +341,16 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
 // GET         '/publicQ'       
 siteRouter.get('/publicQ', (req, res, next) => {
     const today = formatedDate()
-    Queue.find({ date: { $gte: today } })
+    var start = new Date();
+    start.setHours(0, 0, 0, 0);
+
+    var end = new Date();
+    end.setHours(23, 59, 59, 999);
+
+    Queue.find({ date: { $gte: start, $lte: end } }) 
         .populate('appointments inProgress')
         .then((queue) => {
+            console.log('queue :>> ', queue);
             res.render('publicQ', { queue: queue, today })
         })
         .catch((err) => next(err));

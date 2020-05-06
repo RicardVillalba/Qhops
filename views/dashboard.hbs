@@ -17,8 +17,8 @@
 
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Waiting list</caption>
-    <table class="table table-hover">
-        <thead>
+    <table class="table table-sm table-hover">
+        <thead class='black white-text'>
             <tr>
                 <th scope="col">Code</th>
                 <th scope="col">First</th>
@@ -40,14 +40,13 @@
                 {{/each}}
                 <td>{{this.email}}</td>
                 <td>
-                    <div class="dashboard-buttons">
                         <a href="/dashboard/to_room/{{this._id}}">
-                            <button class="btn">TO ROOM</button>
+                            <button class="btn p-1">TO ROOM</button>
                         </a>
                         <a href="/dashboard/delete/{{this._id}}/{{this.status}}">
-                            <button class="btn">DELETE</button>
+                            <button class="btn p-1">DELETE</button>
                         </a>
-                    </div>
+                   
                 </td>
             </tr>
         </tbody>
@@ -58,8 +57,8 @@
 
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Attending</caption>
-    <table class="table table-hover">
-        <thead>
+    <table class="table table-sm table-hover">
+        <thead class='black white-text'>
             <tr>
                 <th scope="col">Code</th>
                 <th scope="col">First</th>
@@ -81,14 +80,12 @@
                 {{/each}}
                 <td>{{this.email}}</td>
                 <td>
-                    <div class="dashboard-buttons">
                         <a href="/dashboard/done/{{this._id}}">
-                            <button class="btn">DONE</button>
+                            <button class="btn p-1">DONE</button>
                         </a>
                         <a href="/dashboard/delete/{{this._id}}/{{this.status}}/{{../_id}}">
-                            <button class="btn">DELETE</button>
+                            <button class="btn p-1">DELETE</button>
                         </a>
-                    </div>
                 </td>
             </tr>
         </tbody>
@@ -100,8 +97,8 @@
 
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Done</caption>
-    <table class="table table-hover">
-        <thead>
+    <table class="table table-sm table-hover">
+        <thead class='black white-text'>
             <tr>
                 <th scope="col">Code</th>
                 <th scope="col">First</th>
@@ -123,11 +120,9 @@
                 {{/each}}
                 <td>{{this.email}}</td>
                 <td>
-                    <div class="dashboard-buttons">
                         <a href="/dashboard/delete/{{this._id}}/{{this.status}}/{{../_id}}">
-                            <button class="btn">DELETE</button>
+                            <button class="btn p-1">DELETE</button>
                         </a>
-                    </div>
                 </td>
             </tr>
         </tbody>

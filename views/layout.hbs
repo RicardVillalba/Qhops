@@ -12,12 +12,54 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
 
+  <!-- Material Design Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
+
+
+
+
+
+
   <title>QHOPS</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 
 <body>
-  <nav class="container my-5">
+  <!--Navbar-->
+<nav class="navmobile navbar navbar-light amber lighten-4 mb-4">
+
+  <!-- Navbar brand -->
+  <a class="navbar-brand" href="#">Navbar</a>
+
+  <!-- Collapse button -->
+  <button class="navbar-toggler first-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent20"
+    aria-controls="navbarSupportedContent20" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="animated-icon1"><span></span><span></span><span></span></div>
+  </button>
+
+  <!-- Collapsible content -->
+  <div class="collapse navbar-collapse" id="navbarSupportedContent20">
+
+    <!-- Links -->
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Features</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Pricing</a>
+      </li>
+    </ul>
+    <!-- Links -->
+
+  </div>
+  <!-- Collapsible content -->
+
+</nav>
+<!--/.Navbar-->
+  <nav class="navdesktop container my-5">
     <div class="row">
       <div class="col-2">
         <a href="/"> <img src="/images/qhops-logo.png" class='logo' alt="logo"></a>
@@ -42,7 +84,8 @@
             {{#if admin.picture.image_url}}
             <img src="{{admin.picture.image_url}}" class="profile-img-nav" alt="profile_picture">
             {{else}}
-            <img src="https://img.icons8.com/pastel-glyph/2x/person-male.png" class="profile-img-nav" alt="profile_picture">
+            <img src="https://img.icons8.com/pastel-glyph/2x/person-male.png" class="profile-img-nav"
+              alt="profile_picture">
             {{/if}}
           </a>
         </div>
@@ -61,6 +104,9 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/js/mdb.min.js"></script>
+  <script src="./src/hamburger.js"></script>
 </body>
 
 </html>

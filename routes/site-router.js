@@ -363,7 +363,7 @@ siteRouter.get('/profile', isLoggedIn, (req, res, next) => {
     Admin.findById(req.session.currentUser._id)
         .then((admin) => {
             console.log(admin)
-            res.render('profile')
+            res.render('profile',{admin})
         })
 })
 

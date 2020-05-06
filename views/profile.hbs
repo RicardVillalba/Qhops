@@ -14,26 +14,32 @@
                     <input type="file" name="photo" id="img" style="display:none;" />
                     <label for="img" class="btn btn-dark p-1 my-2">upload image</label>
                     <button type="submit" class="btn btn-dark p-1 my-2">Update photo</button>
+                    <h3 class="text-center"> name: {{name}}</h3>
+                    <h3 class="text-center"> email: {{admin.email}}</h3>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
 <div class="container dashboard-table table-responsive">
     <table class="table table-hover my-3">
         <thead>
             <tr>
-                <th class="text-center" scope="col">code</th>
+                <th class="text-center" scope="col"> </th>
             </tr>
         </thead>
         <tbody>
-            {{#each queue}}
-            {{#each inProgress}}
+
             <tr>
-                <td class="text-center">{{this.code}}</td>
+                <td class="text-left">name: {{name}}</td>
+
             </tr>
-            {{/each}}
-            {{/each}}
+            <tr>
+
+                <td class="text-left">email: {{admin.email}}</td>
+            </tr>
         </tbody>
     </table>
 
@@ -42,7 +48,7 @@
 
         <thead>
             <tr>
-                <th class="text-center" scope="col">Code</th>
+                <th class="text-center" scope="col"></th>
             </tr>
         </thead>
         <tbody>

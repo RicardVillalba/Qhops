@@ -115,14 +115,19 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
         console.log(tags);
         //console.log(todayQueue);
 
+        const timeStampTypes = {
+            waiting: 'appointment_start_At',
+            attending: 'appointment_attending_At',
+            attended: 'appointment_finished_At'
+        }
+        const typeOfTimeStamp = timeStampTypes[status]
 
-        Appointment.create({ code, fName, lName, email, tags, isUrgent, status })
+        Appointment.create({ code, fName, lName, email, tags, isUrgent, status, [typeOfTimeStamp]: new Date() })
             .then((appointment) => {
 
                 // 3. push the appointment _id into Queue deppending of the status
 
                 // push the appointment _id into queue.appointments[]
-
 
                 function addAppointmentToQueue(responseObj, appointmentObj) {
                     const appointmentTypes = {
@@ -130,8 +135,14 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
                         attending: "inProgress",
                         attended: "appointments_done"
                     }
+                    const timeStampTypes = {
+                        waiting: 'appointment_start_At',
+                        attending: 'appointment_attending_At',
+                        attended: 'appointment_finished_At'
+                    }
                     const { status } = appointmentObj; // 'waiting', 'attending', 'attended'
                     const typeOfQueue = appointmentTypes[status]; // appointmentTypes['waiting']
+
                     // appointmentTypes['waiting'] --> typeOfQueue = 'appointments'
                     // appointmentTypes['attending'] --> typeOfQueue = 'inProgress'
                     // appointmentTypes['attended'] --> typeOfQueue = 'appointments_done'
@@ -161,7 +172,7 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
                         })
                         .then((queue) => {
                             // 4. When the appointment is created, redirect (we choose - add form)
-                            responseObj.redirect("add-appointment");
+                            responseObj.redirect("appointment");
                         })
                         .catch((err) => next(err));
                 }
@@ -179,9 +190,10 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
 // GET         '/dashboard/to_room/:id'       
 siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
+    const appointment_attending_At = new Date()
 
     // 1. Search  appointment in DB to change status.
-    Appointment.findByIdAndUpdate(id, { status: 'attending' })
+    Appointment.findByIdAndUpdate(id, { status: 'attending', appointment_attending_At })
         .then((appointment) => {
             // console.log(appointment);
 
@@ -281,9 +293,11 @@ siteRouter.get('/dashboard/delete/:id/:status', isLoggedIn, (req, res, next) => 
 // GET         '/dashboard/done/:id'       
 siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
+    const appointment_finished_At = new Date()
+
 
     // 1. Search  appointment in DB to change status.
-    Appointment.findByIdAndUpdate(id, { status: 'attended' })
+    Appointment.findByIdAndUpdate(id, { status: 'attended', appointment_finished_At })
         .then((appointment) => {
 
             return appointment

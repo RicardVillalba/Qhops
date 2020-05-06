@@ -12,10 +12,11 @@ const appointmentSchema = new Schema({
     status: {
         type: String,
         enum: ["waiting", "attending", "attended"],
-        appointment_start_At: Date,
-        appointment_finished_At: Date,
         required: true
     },
+    appointment_start_At: { type: Date, default: Date.now },
+    appointment_attending_At: Date,
+    appointment_finished_At: Date,
     room: { type: Schema.Types.ObjectId, ref: "Room" }
 });
 

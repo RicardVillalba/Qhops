@@ -1,66 +1,47 @@
-<!doctype html>
-<html lang="en">
+<div class="form-appointment">
+    <form action='/appointment' method='POST'>
+        <div class="formbox-appointment">
+            <label for=''>Name</label>
+            <input type='text' name='fName'>
+        </div>
+        <div class="formbox-appointment">
+            <label for=''>L.name</label>
+            <input type='text' name='lName'>
+        </div>
+        <div class="formbox-appointment">
+            <label for=''>Email</label>
+            <input type='text' name='email'>
+        </div>
+        <div class="formbox-appointment">
+            <label for="">Tags</label>
+            <input type="text" name="tags" id="tags-input" />
+        </div>
+        <!-- THis is hidden input used to send string of tags to server -->
+        <input type="text" id="tags-list" name="tagsList" style="display: none" />
+        <ul id="tags"></ul>
 
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <div class="formbox-appointment">
+            <label for=''>Is urgent</label>
+            <input type=checkbox name=isUrgent value='true'>
+        </div>
+        <div class="formbox-appointment-radio">
+            <input type="radio" id="waiting" name="status" value="waiting">
+            <label for="waiting">Waiting</label><br>
+        </div>
+        <div class="formbox-appointment-radio">
+            <input type="radio" id="attending" name="status" value="attending">
+            <label for="attending">Attending</label><br>
+        </div>
+        <div class="formbox-appointment-radio">
+            <input type="radio" id="attended" name="status" value="attended">
+            <label for="attended">Attended</label>
+        </div>
+        <div class="butt-form">
+            <button type='submit' id='noenter' class="black-button">Add Appointment</button>
+        </div>
+    </form>
+</div>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
-
-    <title>QHOPS</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-</head>
-
-<body>
-    <div class="form-appointment">
-        <form action='/appointment' method='POST'>
-            <div class="formbox-appointment">
-                <label for=''>Name</label>
-                <input type='text' name='fName'>
-            </div>
-            <div class="formbox-appointment">
-                <label for=''>L.name</label>
-                <input type='text' name='lName'>
-            </div>
-            <div class="formbox-appointment">
-                <label for=''>Email</label>
-                <input type='text' name='email'>
-            </div>
-            <div class="formbox-appointment">
-                <label for="">Tags</label>
-                <input type="text" name="tags" id="tags-input" />
-            </div>
-            <!-- THis is hidden input used to send string of tags to server -->
-            <input type="text" id="tags-list" name="tagsList" style="display: none" />
-            <ul id="tags"></ul>
-
-            <div class="formbox-appointment">
-                <label for=''>Is urgent</label>
-                <input type=checkbox name=isUrgent value='true'>
-            </div>
-            <div class="formbox-appointment-radio">
-                <input type="radio" id="waiting" name="status" value="waiting">
-                <label for="waiting">Waiting</label><br>
-            </div>
-            <div class="formbox-appointment-radio">
-                <input type="radio" id="attending" name="status" value="attending">
-                <label for="attending">Attending</label><br>
-            </div>
-            <div class="formbox-appointment-radio">
-                <input type="radio" id="attended" name="status" value="attended">
-                <label for="attended">Attended</label>
-            </div>
-            <div class="butt-form">
-                <button type='submit' id='noenter' class="black-button">Add Appointment</button>
-            </div>
-        </form>
-    </div>
-</body>
 
 {{!-- Error message display --}}
 {{#if errorMessage}}

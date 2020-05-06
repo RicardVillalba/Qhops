@@ -70,8 +70,6 @@ app.use(
     }),
   })
 );
-
-//midlewere that creates admin value for all hbs views, if user is logedin
 app.use(function (req, res, next) {
   console.log('req.session.currentUser :>> ', req.session.currentUser);
   if (req.session.currentUser) {
@@ -89,7 +87,7 @@ app.locals.title = 'Express - Generated with express generator'; //UROS????
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use("/", siteRouter)
-app.use("/",cloudinaryRouter)
+app.use("/", cloudinaryRouter)
 
 
 //ERROR HANDLER

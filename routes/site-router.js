@@ -28,6 +28,7 @@ const queueObj = {
 }
 
 // how to avoid runing this function every time we enter dashboard?
+// remember to check if this is still needed
 function isQueue(req, res, next) {
     const todayQueue = Queue.find({ date: { $gte: today } })
         .then((queue) => {
@@ -340,7 +341,8 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
 // GET         '/publicQ'       
 siteRouter.get('/publicQ', (req, res, next) => {
     const today = formatedDate()
-    todayQueue.populate('appointments inProgress appointments_done')
+    Queue.find({ date: { $gte: today } })
+        .populate('appointments inProgress')
         .then((queue) => {
             res.render('publicQ', { queue: queue, today })
         })
@@ -349,12 +351,12 @@ siteRouter.get('/publicQ', (req, res, next) => {
 
 // ACCESS PROFILE
 // GET         '/profile'       
-siteRouter.get('/profile', (req, res, next) => {
+siteRouter.get('/profile', isLoggedIn, (req, res, next) => {
     console.log('req.session.currentuser :>> ', req.session.currentUser._id);
     Admin.findById(req.session.currentUser._id)
         .then((admin) => {
             console.log(admin)
-            res.render('profile', { admin })
+            res.render('profile')
         })
 })
 

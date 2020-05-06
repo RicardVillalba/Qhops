@@ -138,20 +138,18 @@ body {
   animation-name: animatedLogo;
   animation-duration: 4s;
 }
-.img_logo{
+.img_logo {
   height: auto;
-  width: 45vw ;
+  width: 45vw;
   max-width: 400px;
 }
 
 @keyframes animatedLogo {
   0% {
     opacity: 0%;
-    
   }
   100% {
     opacity: 100%;
-    
   }
 }
 
@@ -179,6 +177,13 @@ body {
   background-color: transparent;
   border: transparent;
   font-family: "Raleway", sans-serif;
+}
+
+.profile-img-nav {
+  height: auto;
+  width: 5vw;
+  border-radius: 50%;
+  max-width: 40px;
 }
 
 .form {
@@ -388,6 +393,5 @@ th {
   height: auto;
   width: 20vw;
   border-radius: 50%;
-  margin-left: 60vw;
   max-width: 160px;
 }

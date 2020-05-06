@@ -173,7 +173,7 @@ authRouter.post("/login", (req, res, next) => {
           req.session.currentUser = user;
 
           // 5. Redirect the user to some page (we choose - home page)
-          res.redirect("/dashboard");
+          res.redirect("/profile");
         }
       }
     })

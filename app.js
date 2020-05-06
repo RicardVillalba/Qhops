@@ -71,7 +71,6 @@ app.use(
   })
 );
 app.use(function (req, res, next) {
-  console.log('req.session.currentUser :>> ', req.session.currentUser);
   if (req.session.currentUser) {
     res.locals.admin = req.session.currentUser
   }

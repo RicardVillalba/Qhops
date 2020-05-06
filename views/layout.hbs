@@ -16,49 +16,52 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/css/mdb.min.css" rel="stylesheet">
 
 
-
-
-
-
   <title>QHOPS</title>
   <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 
 <body>
   <!--Navbar-->
-<nav class="navmobile navbar navbar-light amber lighten-4 mb-4">
+  <nav class="navmobile navbar navbar-light white mb-4">
+    <div class="row justify-content-between">
+      <div class="col-6">
+        <!-- Navbar brand -->
+        <a href="/"> <img src="/images/qhops-logo.png" class='logo' alt="logo"></a>
+        <!-- Collapsible content -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent20">
 
-  <!-- Navbar brand -->
-  <a class="navbar-brand" href="#">Navbar</a>
+          <!-- Links -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+          </ul>
+          <!-- Links -->
 
-  <!-- Collapse button -->
-  <button class="navbar-toggler first-button" type="button" data-toggle="collapse" data-target="#navbarSupportedContent20"
-    aria-controls="navbarSupportedContent20" aria-expanded="false" aria-label="Toggle navigation">
-    <div class="animated-icon1"><span></span><span></span><span></span></div>
-  </button>
+        </div>
+      </div>
+      <div class="col-4">
 
-  <!-- Collapsible content -->
-  <div class="collapse navbar-collapse" id="navbarSupportedContent20">
 
-    <!-- Links -->
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-    </ul>
-    <!-- Links -->
+        <!-- Collapse button -->
+        <button class="navbar-toggler first-button" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent20" aria-controls="navbarSupportedContent20" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <div class="animated-icon1"><span></span><span></span><span></span></div>
+        </button>
+      </div>
+    </div>
 
-  </div>
-  <!-- Collapsible content -->
+    <!-- Collapsible content -->
 
-</nav>
-<!--/.Navbar-->
+  </nav>
+  <!--/.Navbar-->
   <nav class="navdesktop container my-5">
     <div class="row">
       <div class="col-2">
@@ -106,7 +109,7 @@
     crossorigin="anonymous"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.16.0/js/mdb.min.js"></script>
-  <script src="./src/hamburger.js"></script>
+  <script src="/src/hamburger.js"></script>
 </body>
 
 </html>

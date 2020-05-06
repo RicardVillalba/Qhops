@@ -118,7 +118,7 @@ authRouter.post("/signup", (req, res, next) => {
 
           // 5. Create new admin in DB, saving the encrypted password
           .then((user) => {
-            res.redirect("/");
+            res.redirect("/auth/login");
             // creates room, Q, and praxis and returns a pending promise
           })
 

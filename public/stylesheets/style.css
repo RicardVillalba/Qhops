@@ -442,10 +442,9 @@ th {
 
 /* Icon 1 */
 
-.animated-icon1, .animated-icon2, .animated-icon3 {
+.animated-icon1 {
   width: 30px;
   height: 20px;
-  position: relative;
   margin: 0px;
   -webkit-transform: rotate(0deg);
   -moz-transform: rotate(0deg);
@@ -458,7 +457,7 @@ th {
   cursor: pointer;
   }
   
-  .animated-icon1 span, .animated-icon2 span, .animated-icon3 span {
+  .animated-icon1 span {
   display: block;
   position: absolute;
   height: 3px;
@@ -477,17 +476,9 @@ th {
   }
   
   .animated-icon1 span {
-  background: #e65100;
+  background: black;
   }
-  
-  .animated-icon2 span {
-  background: #e3f2fd;
-  }
-  
-  .animated-icon3 span {
-  background: #f3e5f5;
-  }
-  
+
   .animated-icon1 span:nth-child(1) {
   top: 0px;
   }

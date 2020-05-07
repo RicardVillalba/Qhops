@@ -96,9 +96,7 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
 
     // 1. Check if the required fields are provided
     if (email === "" || fName === "" || lName === "" || status === "") {
-        res.render("add-appointment", {
-            errorMessage: "Please fill all the required fields.",
-        });
+        res.send({errorMessage: "Please fill all the required fields."});
         return; // stops the execution of the function further
     }
 

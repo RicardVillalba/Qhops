@@ -12,6 +12,10 @@
         </div>
     </div>
 </div>
+{{#if errorMessage}}
+<div class="error-message"> {{errorMessage}} </div>
+{{/if}}
+
 <div>
     <div id="form" class="form-appointment">
         <form class=" " id="add-appointment" action='/appointment' method='POST'>

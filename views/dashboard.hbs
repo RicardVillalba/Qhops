@@ -8,15 +8,13 @@
             </form>
         </div>
         <div class="col-4 text-right">
-            <a href="/appointment">
-                <button type='submit' class="btn btn-outline-dark p-2 my-2">Add Appointment</button>
-            </a>
+            <button id="addButton" type='submit' class="btn btn-outline-dark p-2 my-2">Add Appointment</button>
         </div>
     </div>
 </div>
 <div>
-    <div class="form-appointment">
-        <form id="add-appointment" action='/appointment' method='POST'>
+    <div id="form" class="form-appointment">
+        <form class=" " id="add-appointment" action='/appointment' method='POST'>
             <div class="formbox-appointment">
                 <label for=''>Name</label>
                 <input id="fName" type='text' name='fName'>
@@ -34,7 +32,7 @@
                 <input type="text" name="tags" id="tags-input" />
             </div>
             <!-- THis is hidden input used to send string of tags to server -->
-            <input  type="text" id="tags-list" name="tagsList" style="display: none" />
+            <input type="text" id="tags-list" name="tagsList" style="display: none" />
             <ul id="tags"></ul>
 
             <div class="formbox-appointment">
@@ -53,9 +51,8 @@
                 <input type="radio" id="attended" name="status" value="attended">
                 <label for="attended">Attended</label>
             </div>
-            <div class="button my-4">
-                <button type='submit' id='noenter' class="black-button mx-5">Add Appointment</button>
-            </div>
+            <button type='submit' id='noenter' class="btn btn-black text-white py-3 my-3 btn-block">Add
+                Appointment</button>
         </form>
     </div>
 </div>
@@ -74,7 +71,7 @@
         </thead>
         {{#each queue}}
         <tbody>
-        {{#each appointments}}
+            {{#each appointments}}
             <tr>
                 <th scope="row">{{this.code}}</th>
                 <td>{{this.fName}}</td>
@@ -95,7 +92,7 @@
 
                 </td>
             </tr>
-        {{/each}}
+            {{/each}}
         </tbody>
         {{/each}}
     </table>
@@ -116,14 +113,16 @@
         </thead>
         {{#each queue}}
         <tbody>
-        {{#each inProgress}}
+            {{#each inProgress}}
             <tr>
                 <th scope="row">{{this.code}}</th>
                 <td>{{this.fName}}</td>
                 <td>{{this.lName}}</td>
-                {{#each this.tags}}
-                <td>{{this}}</td>
-                {{/each}}
+                <td>
+                    {{#each this.tags}}
+                    {{" "}}{{this}}
+                    {{/each}}
+                </td>
                 <td>{{this.email}}</td>
                 <td>
                     <a href="/dashboard/done/{{this._id}}">
@@ -134,7 +133,7 @@
                     </a>
                 </td>
             </tr>
-        {{/each}}
+            {{/each}}
         </tbody>
         {{/each}}
     </table>
@@ -156,14 +155,16 @@
         </thead>
         {{#each queue}}
         <tbody>
-        {{#each appointments_done}}
+            {{#each appointments_done}}
             <tr>
                 <th scope="row">{{this.code}}</th>
                 <td>{{this.fName}}</td>
                 <td>{{this.lName}}</td>
-                {{#each this.tags}}
-                <td>{{this}}</td>
-                {{/each}}
+                <td>
+                    {{#each this.tags}}
+                    {{" "}}{{this}}
+                    {{/each}}
+                </td>
                 <td>{{this.email}}</td>
                 <td>
                     <a href="/dashboard/delete/{{this._id}}/{{this.status}}/">
@@ -171,9 +172,11 @@
                     </a>
                 </td>
             </tr>
-        {{/each}}
+            {{/each}}
         </tbody>
         {{/each}}
     </table>
 </div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script src="/src/appointment.js"></script>

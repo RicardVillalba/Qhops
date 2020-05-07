@@ -8,7 +8,14 @@ tagsInput.addEventListener("keypress", function (e) {
   // const lastTypedChar = inputText[inputText.length - 1];
 
   if (e.key === "Enter") {
+
+    // const newDiv = document.createElement('div')
     const newLi = document.createElement("li");
+
+    // newDiv.innerHTML = `<div class="formbox-appointment"><li>${inputText}</li></div>`
+
+
+
     newLi.innerHTML = inputText;
     tagsDisplay.appendChild(newLi);
 
@@ -87,7 +94,7 @@ appointmentForm.addEventListener('submit', (e) => {
         table.appendChild(newRow);
 
       })
-  }, 2000)
+  }, 1800)
 })
 
 

@@ -24,9 +24,6 @@
     </div>
 </div>
 --}}
-{{#if errorMessage}}
-<div class="error-message"> {{errorMessage}} </div>
-{{/if}}
 
 
 <div class="row justify-content-center">
@@ -39,18 +36,20 @@
 
 
             <!-- First name -->
-            <input type="text" id="defaultRegisterFormFirstName" name='name' class="form-control mb-4" placeholder="First name">
+            <input type="text" id="defaultRegisterFormFirstName" name='name' class="form-control mb-4"
+                placeholder="First name">
 
 
 
             <!-- E-mail -->
-            <input type="text" id="defaultRegisterFormEmail" name='email' class="form-control mb-4" placeholder="E-mail">
+            <input type="text" id="defaultRegisterFormEmail" name='email' class="form-control mb-4"
+                placeholder="E-mail">
             <!-- Phone number -->
-            <input type="text" id="defaultRegisterPhonePassword" name='phone' class="form-control mb-4" placeholder="Phone number"
-                aria-describedby="defaultRegisterFormPhoneHelpBlock">
+            <input type="text" id="defaultRegisterPhonePassword" name='phone' class="form-control mb-4"
+                placeholder="Phone number" aria-describedby="defaultRegisterFormPhoneHelpBlock">
             <!-- Password -->
-            <input type="password" id="defaultRegisterFormPassword" name='password' class="form-control" placeholder="Password"
-                aria-describedby="defaultRegisterFormPasswordHelpBlock">
+            <input type="password" id="defaultRegisterFormPassword" name='password' class="form-control"
+                placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
             <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
                 At least 8 characters and 1 digit
             </small>
@@ -59,7 +58,9 @@
 
             <!-- Sign up button -->
             <button class="btn btn-black text-white py-3 btn-block" type="submit">Sign in</button>
-
+            {{#if errorMessage}}
+            <div class="error-message"> {{errorMessage}} </div>
+            {{/if}}
         </form>
         <div class="signup-button ">
             <a href="/auth/login">

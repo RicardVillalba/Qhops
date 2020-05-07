@@ -14,10 +14,54 @@
         </div>
     </div>
 </div>
+<div>
+    <div class="form-appointment">
+        <form id="add-appointment" action='/appointment' method='POST'>
+            <div class="formbox-appointment">
+                <label for=''>Name</label>
+                <input id="fName" type='text' name='fName'>
+            </div>
+            <div class="formbox-appointment">
+                <label for=''>L.name</label>
+                <input id="lName" type='text' name='lName'>
+            </div>
+            <div class="formbox-appointment">
+                <label for=''>Email</label>
+                <input id="email" type='text' name='email'>
+            </div>
+            <div class="formbox-appointment">
+                <label for="">Tags</label>
+                <input type="text" name="tags" id="tags-input" />
+            </div>
+            <!-- THis is hidden input used to send string of tags to server -->
+            <input  type="text" id="tags-list" name="tagsList" style="display: none" />
+            <ul id="tags"></ul>
 
+            <div class="formbox-appointment">
+                <label for=''>Is urgent</label>
+                <input id="isUrgent" type=checkbox name=isUrgent value='true'>
+            </div>
+            <div class="formbox-appointment-radio">
+                <input type="radio" id="waiting" name="status" value="waiting" checked>
+                <label for="waiting">Waiting</label><br>
+            </div>
+            <div class="formbox-appointment-radio">
+                <input type="radio" id="attending" name="status" value="attending">
+                <label for="attending">Attending</label><br>
+            </div>
+            <div class="formbox-appointment-radio">
+                <input type="radio" id="attended" name="status" value="attended">
+                <label for="attended">Attended</label>
+            </div>
+            <div class="button my-4">
+                <button type='submit' id='noenter' class="black-button mx-5">Add Appointment</button>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Waiting list</caption>
-    <table class="table table-sm table-hover">
+    <table id="waiting-table" class="table table-sm table-hover">
         <thead class='bg-light '>
             <tr>
                 <th scope="col">Code</th>
@@ -29,35 +73,37 @@
             </tr>
         </thead>
         {{#each queue}}
-        {{#each appointments}}
         <tbody>
+        {{#each appointments}}
             <tr>
                 <th scope="row">{{this.code}}</th>
                 <td>{{this.fName}}</td>
                 <td>{{this.lName}}</td>
-                {{#each this.tags}}
-                <td>{{this}}</td>
-                {{/each}}
+                <td>
+                    {{#each this.tags}}
+                    {{" "}}{{this}}
+                    {{/each}}
+                </td>
                 <td>{{this.email}}</td>
                 <td>
-                        <a href="/dashboard/to_room/{{this._id}}">
-                            <button class="btn p-1">TO ROOM</button>
-                        </a>
-                        <a href="/dashboard/delete/{{this._id}}/{{this.status}}">
-                            <button class="btn p-1">DELETE</button>
-                        </a>
-                   
+                    <a href="/dashboard/to_room/{{this._id}}">
+                        <button class="btn p-1">TO ROOM</button>
+                    </a>
+                    <a href="/dashboard/delete/{{this._id}}/{{this.status}}">
+                        <button class="btn p-1">DELETE</button>
+                    </a>
+
                 </td>
             </tr>
-        </tbody>
         {{/each}}
+        </tbody>
         {{/each}}
     </table>
 </div>
 
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Attending</caption>
-    <table class="table table-sm table-hover">
+    <table id="attending-table" class="table table-sm table-hover">
         <thead class='bg-light '>
             <tr>
                 <th scope="col">Code</th>
@@ -69,8 +115,8 @@
             </tr>
         </thead>
         {{#each queue}}
-        {{#each inProgress}}
         <tbody>
+        {{#each inProgress}}
             <tr>
                 <th scope="row">{{this.code}}</th>
                 <td>{{this.fName}}</td>
@@ -80,16 +126,16 @@
                 {{/each}}
                 <td>{{this.email}}</td>
                 <td>
-                        <a href="/dashboard/done/{{this._id}}">
-                            <button class="btn p-1">DONE</button>
-                        </a>
-                        <a href="/dashboard/delete/{{this._id}}/{{this.status}}/{{../_id}}">
-                            <button class="btn p-1">DELETE</button>
-                        </a>
+                    <a href="/dashboard/done/{{this._id}}">
+                        <button class="btn p-1">DONE</button>
+                    </a>
+                    <a href="/dashboard/delete/{{this._id}}/{{this.status}}">
+                        <button class="btn p-1">DELETE</button>
+                    </a>
                 </td>
             </tr>
-        </tbody>
         {{/each}}
+        </tbody>
         {{/each}}
     </table>
 </div>
@@ -97,7 +143,7 @@
 
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Done</caption>
-    <table class="table table-sm table-hover">
+    <table id="done-table" class="table table-sm table-hover">
         <thead class='bg-light '>
             <tr>
                 <th scope="col">Code</th>
@@ -109,8 +155,8 @@
             </tr>
         </thead>
         {{#each queue}}
-        {{#each appointments_done}}
         <tbody>
+        {{#each appointments_done}}
             <tr>
                 <th scope="row">{{this.code}}</th>
                 <td>{{this.fName}}</td>
@@ -120,13 +166,14 @@
                 {{/each}}
                 <td>{{this.email}}</td>
                 <td>
-                        <a href="/dashboard/delete/{{this._id}}/{{this.status}}/">
-                            <button class="btn p-1">DELETE</button>
-                        </a>
+                    <a href="/dashboard/delete/{{this._id}}/{{this.status}}/">
+                        <button class="btn p-1">DELETE</button>
+                    </a>
                 </td>
             </tr>
-        </tbody>
         {{/each}}
+        </tbody>
         {{/each}}
     </table>
 </div>
+<script src="/src/appointment.js"></script>

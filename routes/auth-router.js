@@ -159,6 +159,7 @@ authRouter.post("/login", (req, res, next) => {
     .then((user) => {
       // 3.1 If the user is not found, show error message
       if (!user) {
+        console.log('object :>> ', object);
         res.render("auth-views/login-form", { errorMessage: "Input invalid" });
       } else {
         // 3.2 If user exists ->  Check if the password is correct
@@ -174,6 +175,9 @@ authRouter.post("/login", (req, res, next) => {
 
           // 5. Redirect the user to some page (we choose - home page)
           res.redirect("/profile");
+        } else {
+          res.render("auth-views/login-form", { errorMessage: "Input invalid" });
+
         }
       }
     })

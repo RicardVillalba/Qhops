@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+const mongoose = require('mongoose')
 const app = require('../app');
 const debug = require('debug')('qhops:server');
 const http = require('http');
@@ -88,3 +88,10 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+process.on('SIGINT', () => {  
+  mongoose.connection.close(() => { 
+    console.log('Mongoose connection disconnected through app termination'); 
+    process.exit(0); 
+  }); 
+});

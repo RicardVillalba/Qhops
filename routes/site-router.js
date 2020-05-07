@@ -165,7 +165,7 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
                                 // queue[0].appointments
                                 appointmentsArray.push(appointmentObj._id)
 
-                                return Queue.findByIdAndUpdate(queue[0]._id, { [typeOfQueue]: appointmentsArray })
+                                return Queue.findByIdAndUpdate(queue[0]._id, { [typeOfQueue]: appointmentsArray }, { new: true })
 
                             } else { // Else create queue and then add appointment id to the corresponding array
                                 const newQueue = { ...queueObj, [typeOfQueue]: [appointmentObj._id] }
@@ -174,7 +174,8 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
                         })
                         .then((queue) => {
                             // 4. When the appointment is created, redirect (we choose - add form)
-                            responseObj.redirect("appointment");
+                            //responseObj.redirect("appointment");
+                            res.json({ appointment: appointmentObj})
                         })
                         .catch((err) => next(err));
                 }
@@ -341,12 +342,11 @@ siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
 // ACCESS ROOMS
 // GET         '/rooms'       
 siteRouter.get('/rooms', (req, res, next) => {
-    
+
     Room.find()
         .then((room) => {
-            
-            room = room[0]
             console.log('room :>> ', room);
+            room = room[0]
             res.render('rooms', { room })
         })
         .catch((err) => next(err));
@@ -365,6 +365,7 @@ siteRouter.get('/publicQ', (req, res, next) => {
     Queue.find({ date: { $gte: start, $lte: end } })
         .populate('appointments inProgress')
         .then((queue) => {
+            //
             console.log('queue :>> ', queue);
             res.render('publicQ', { queue: queue, today })
         })
@@ -376,19 +377,23 @@ siteRouter.get('/publicQ', (req, res, next) => {
 siteRouter.get('/profile', isLoggedIn, (req, res, next) => {
     console.log('req.session.currentuser :>> ', req.session.currentUser._id);
     let adminObj
-    Admin.findById(req.session.currentUser._id).populate('praxis')
-        .then((admin) => {
-            console.log('room id', admin.praxis[0].rooms[0])
-            adminObj = admin
-            roomId = admin.praxis[0].rooms[0]
-            return Room.findById(roomId)
-
+    Admin.findById(req.session.currentUser._id)
+        .populate({
+            path: 'praxis',
+            populate: {
+                path: 'rooms',
+                model: 'Room'
+            }
         })
-        .then((room) => {
-            console.log(room, adminObj)
-            res.render('profile', { adminObj, room })
-
+        .then((adminObj) => {
+            console.log(adminObj, adminObj.praxis[0])
+            res.render('profile', { adminObj })
+            // console.log('room id', admin.praxis[0].rooms[0])
+            // adminObj = admin
+            // roomId = admin.praxis[0].rooms[0]
+            // return Room.findById(roomId)
         })
+        .catch((err) => console.log(err));
 })
 
 function formatedDate(date) {

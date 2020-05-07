@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Queue = require('./../models/queue-model.js');
-const DB_NAME = 'qhopsDB';
+require('dotenv').config()
 
 let queue = {
 
@@ -15,18 +15,17 @@ let queue = {
 
 }
 
-mongoose.connect(
-  `mongodb://localhost:27017/${DB_NAME}`,
-  { useNewUrlParser: true, useUnifiedTopology: true }
+mongoose.connect(process.env.MONGODB_URI,{ 
+  useNewUrlParser: true, useUnifiedTopology: true }
 )
   .then((x) => x.connection.dropDatabase())
   .then(() => {
-    // 2. CREATE THE DOCUMENT FROM THE ARRAY OF `celebrities`
+    // 2. CREATE THE DOCUMENT FROM THE OBJ queue
     const createQ = Queue.create(queue);
     return createQ;
   })
   .then((createdQ) => {
-    console.log(`Inserted books: ${createdQ}`)
+    console.log(`Inserted queues: ${createdQ}`)
     // 3. CLOSE THE DB CONNECTION
 
     const closePr = mongoose.connection.close();

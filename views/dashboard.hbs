@@ -72,7 +72,7 @@
                 <th scope="col">First</th>
                 <th scope="col">Last</th>
                 <th scope="col">tags</th>
-                <th scope="col">email</th>
+                <th scope="col" class="d-none d-md-block">email</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -88,7 +88,7 @@
                     {{" "}}{{this}}
                     {{/each}}
                 </td>
-                <td>{{this.email}}</td>
+                <td class="d-none d-md-block">{{this.email}}</td>
                 <td>
                     <a href="/dashboard/to_room/{{this._id}}">
                         <button class="btn p-1">TO ROOM</button>
@@ -114,7 +114,7 @@
                 <th scope="col">First</th>
                 <th scope="col">Last</th>
                 <th scope="col">tags</th>
-                <th scope="col">email</th>
+                <th scope="col" class="d-none d-md-block">email</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -130,7 +130,7 @@
                     {{" "}}{{this}}
                     {{/each}}
                 </td>
-                <td>{{this.email}}</td>
+                <td class="d-none d-md-block">{{this.email}}</td>
                 <td>
                     <a href="/dashboard/done/{{this._id}}">
                         <button class="btn p-1">DONE</button>
@@ -156,7 +156,7 @@
                 <th scope="col">First</th>
                 <th scope="col">Last</th>
                 <th scope="col">tags</th>
-                <th scope="col">email</th>
+                <th scope="col" class="d-none d-md-block">email</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -172,7 +172,7 @@
                     {{" "}}{{this}}
                     {{/each}}
                 </td>
-                <td>{{this.email}}</td>
+                <td class="d-none d-md-block">{{this.email}}</td>
                 <td>
                     <a href="/dashboard/delete/{{this._id}}/{{this.status}}/">
                         <button class="btn p-1">DELETE</button>

@@ -104,23 +104,23 @@ appointmentForm.addEventListener('submit', (e) => {
 function renderButtons(appointmentObj) {
   if (appointmentObj.status === 'waiting') {
     return ` <a href="/dashboard/to_room/${appointmentObj._id}">
-            <button class="btn p-1">TO ROOM</button>
+            <button class="btn p-1 float-right">ROOM</button>
           </a>
             <a href="/dashboard/delete/${appointmentObj._id}/${appointmentObj.status}">
-          <button class="btn p-1">DELETE</button>
+          <button class="btn p-1 float-right">DELETE</button>
           </a>`
   } else if (appointmentObj.status === 'attending') {
     return ` <a href="/dashboard/done/${appointmentObj._id}">
-              <button class="btn p-1">DONE</button>
+              <button class="btn p-1 float-right">DONE</button>
           </a>
           <a href="/dashboard/delete/${appointmentObj._id}/${appointmentObj.status}">
-              <button class="btn p-1">DELETE</button>
+              <button class="btn p-1 float-right">DELETE</button>
           </a>`
 
   } else {
     return `
             <a href="/dashboard/delete/${appointmentObj._id}/${appointmentObj.status}">
-          <button class="btn p-1">DELETE</button>
+          <button class="btn p-1 float-right">DELETE</button>
           </a>`
 
   }

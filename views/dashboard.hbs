@@ -1,14 +1,16 @@
 <h2 class="row my-2 justify-content-center">Dashboard</h2>
 <div class="container">
-    <div class="row justify-content-between align-items-center">
-        <div class="col-6 formbox-date">
+    <div class="row align-items-center justify-content-between">
+        <div class="col-6 ">
             <form action='/pastQ' method='POST'>
-                <input type='date' name='date'>
-                <button type='submit' class="btn btn-dark p-1 mb-1">Submit</button>
+                <div class="row ml-1 align-items-center">
+                    <input type='date' name='date' class="border">
+                    <button type='submit' class="btn btn-dark p-1">Submit</button>
+                </div>
             </form>
         </div>
-        <div class="col-6 text-right">
-            <button id="addButton" type='submit' class="btn btn-outline-dark p-2 my-2">Add Appointment</button>
+        <div class="col text-right">
+            <button id="addButton" type='submit' class="btn btn-outline-dark p-1">Add Appointment</button>
         </div>
     </div>
 </div>
@@ -91,10 +93,10 @@
                 <td class="d-none d-md-block">{{this.email}}</td>
                 <td>
                     <a href="/dashboard/to_room/{{this._id}}">
-                        <button class="btn p-1">TO ROOM</button>
+                        <button class="btn p-1 float-right">ROOM</button>
                     </a>
                     <a href="/dashboard/delete/{{this._id}}/{{this.status}}">
-                        <button class="btn p-1">DELETE</button>
+                        <button class="btn p-1 float-right">DELETE</button>
                     </a>
 
                 </td>
@@ -133,10 +135,10 @@
                 <td class="d-none d-md-block">{{this.email}}</td>
                 <td>
                     <a href="/dashboard/done/{{this._id}}">
-                        <button class="btn p-1">DONE</button>
+                        <button class="btn p-1 float-right">DONE</button>
                     </a>
                     <a href="/dashboard/delete/{{this._id}}/{{this.status}}">
-                        <button class="btn p-1">DELETE</button>
+                        <button class="btn p-1 float-right">DELETE</button>
                     </a>
                 </td>
             </tr>
@@ -175,7 +177,7 @@
                 <td class="d-none d-md-block">{{this.email}}</td>
                 <td>
                     <a href="/dashboard/delete/{{this._id}}/{{this.status}}/">
-                        <button class="btn p-1">DELETE</button>
+                        <button class="btn p-1 float-right">DELETE</button>
                     </a>
                 </td>
             </tr>

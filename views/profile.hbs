@@ -29,7 +29,7 @@
 
 
 <div class="py-5 container dashboard-table table-responsive">
-    <caption>{{adminObj.praxis.0.organizationName}}</caption>
+    {{#if adminObj.praxis}}
 
     <table class="table table-sm table-hover">
         <thead class='bg-light black-text'>
@@ -44,21 +44,28 @@
             </tr>
         </thead>
         <tbody>
+            {{#each adminObj.praxis}}
+            <tr>
+                {{organizationName}}
+            </tr>
+            {{#each rooms}}
             <tr>
                 <td class="text-center"></td>
-                <td class="text-center">{{room.name}}</td>
-                <td class="text-center">{{room.description}}</td>
-                <td class="text-center"> {{room.numSpots}}</td>
-                <td class="text-center"> {{room.spotsOccupied}}</td>
+                <td class="text-center">{{name}}</td>
+                <td class="text-center">{{description}}</td>
+                <td class="text-center"> {{numSpots}}</td>
+                <td class="text-center"> {{spotsOccupied}}</td>
                 <td>
 
-                <a href="/dashboard/to_room/{{this._id}}">
-                            <button class="btn p-1">Edit</button>
-                        </a>
+                    <a href="#">
+                        <button class="btn p-1">Edit</button>
+                    </a>
                 </td>
             </tr>
-
+            {{/each}}
+            {{/each}}
         </tbody>
     </table>
+    {{/if}}
 </div>
 </div>

@@ -313,9 +313,6 @@ input[type="text"] {
 
 .form-appointment {
   width: 100%;
-  height: 60%;
-
-  margin-bottom: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -365,6 +362,16 @@ input[type="text"] {
   justify-content: center;
   align-content: center;
   font-family: "Raleway", sans-serif;
+}
+
+#add-appointment{
+  overflow: hidden;
+  height: 0;
+  transition:  height 1s;
+}
+
+#add-appointment.open{
+  height: 555px;
 }
 
 .dashboard-table {

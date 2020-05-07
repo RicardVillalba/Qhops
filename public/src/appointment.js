@@ -1,3 +1,4 @@
+// tags in add appointment form
 const tagsInput = document.querySelector("#tags-input");
 const tagsDisplay = document.querySelector("#tags");
 const tagsListHidden = document.querySelector("#tags-list");
@@ -21,6 +22,9 @@ tagsInput.addEventListener("keypress", function (e) {
   }
 });
 
+
+
+// axios / fetch to update tables without reloading view
 const appointmentForm = document.getElementById('add-appointment');
 
 const tableTypes = {
@@ -31,6 +35,8 @@ const tableTypes = {
 console.log('tableTypes :>> ', tableTypes);
 
 appointmentForm.addEventListener('submit', (e) => {
+  appointmentForm.classList.toggle('open')
+
   e.preventDefault()
   const body = {
     fName: document.getElementById('fName').value,
@@ -43,27 +49,31 @@ appointmentForm.addEventListener('submit', (e) => {
   console.log('body', body)
 
 
+  // fetch('/appointment', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify(body)
+  // })
+  // .then((response) => response.json())
 
+  setTimeout(() => {
 
-  fetch('/appointment', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  })
-    .then((response) => response.json())
-    .then((parsedResponse) => {
-      console.log('parsedResponse', parsedResponse)
-      const { appointment } = parsedResponse;
-      const newRow = document.createElement('tr');
-      newRow.innerHTML = `
+    axios.post('/appointment', body)
+
+      .then((response) => {
+        console.log('response', response)
+        const { appointment } = response.data;
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
             <tr>
                 <th scope="row">${appointment.code}</th>
                 <td>${appointment.fName}</td>
                 <td>${appointment.lName}</td>
                 <td>
-                    ${appointment.tags.reduce((acc, tag) => acc + ` ${tag}`, '')}
+                    ${appointment.tags.reduce((acc, tag) => acc + ` ${tag}`)}
                 </td>
                 <td>${appointment.email}</td>
 
@@ -73,14 +83,16 @@ appointmentForm.addEventListener('submit', (e) => {
                 </td>
             </tr >
             `;
-      const table = tableTypes[appointment.status];
-      table.appendChild(newRow);
+        const table = tableTypes[appointment.status];
+        table.appendChild(newRow);
 
-
-    })
-
-
+      })
+  }, 2000)
 })
+
+
+//helper function to render the right buttons depending of appointment status 
+//(waiting, attending or attended)
 
 function renderButtons(appointmentObj) {
   if (appointmentObj.status === 'waiting') {
@@ -107,3 +119,8 @@ function renderButtons(appointmentObj) {
   }
 }
 
+
+const addButton = document.getElementById('addButton')
+addButton.addEventListener('click', (e) => {
+  appointmentForm.classList.toggle('open')
+})

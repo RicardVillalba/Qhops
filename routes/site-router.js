@@ -175,7 +175,7 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
                         .then((queue) => {
                             // 4. When the appointment is created, redirect (we choose - add form)
                             //responseObj.redirect("appointment");
-                            res.json({ appointment: appointmentObj})
+                            responseObj.json({ appointment: appointmentObj })
                         })
                         .catch((err) => next(err));
                 }
@@ -365,7 +365,12 @@ siteRouter.get('/publicQ', (req, res, next) => {
     Queue.find({ date: { $gte: start, $lte: end } })
         .populate('appointments inProgress')
         .then((queue) => {
-            //
+            console.log('queue :>> ', queue);
+            //sort by date and splice
+            queue[0].appointments.sort((a, b) => a.appointment_start_At - b.appointment_start_At)
+            queue[0].inProgress.sort((a, b) => a.appointment_attending_At - b.appointment_attending_At)
+            queue[0].inProgress = queue[0].inProgress.splice(0, 5)
+
             console.log('queue :>> ', queue);
             res.render('publicQ', { queue: queue, today })
         })

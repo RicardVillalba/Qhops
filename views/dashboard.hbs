@@ -18,7 +18,7 @@
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Waiting list</caption>
     <table class="table table-sm table-hover">
-        <thead class='black white-text'>
+        <thead class='bg-light '>
             <tr>
                 <th scope="col">Code</th>
                 <th scope="col">First</th>
@@ -58,7 +58,7 @@
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Attending</caption>
     <table class="table table-sm table-hover">
-        <thead class='black white-text'>
+        <thead class='bg-light '>
             <tr>
                 <th scope="col">Code</th>
                 <th scope="col">First</th>
@@ -98,7 +98,7 @@
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Done</caption>
     <table class="table table-sm table-hover">
-        <thead class='black white-text'>
+        <thead class='bg-light '>
             <tr>
                 <th scope="col">Code</th>
                 <th scope="col">First</th>
@@ -120,7 +120,7 @@
                 {{/each}}
                 <td>{{this.email}}</td>
                 <td>
-                        <a href="/dashboard/delete/{{this._id}}/{{this.status}}/{{../_id}}">
+                        <a href="/dashboard/delete/{{this._id}}/{{this.status}}/">
                             <button class="btn p-1">DELETE</button>
                         </a>
                 </td>

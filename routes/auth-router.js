@@ -24,8 +24,8 @@ const queueObj = {
   nurseId: undefined,
   date: new Date(),
   capacity: '', //      ( numSpots*workingHours )
-  patientsServed: '',
-  avgTime: '', //   ( timepast / patients_Served )
+  //patientsServed: '',
+  //avgTime: '', //   ( timepast / patients_Served )
 }
 const roomObj = {
   name: 'Room 54',

@@ -24,8 +24,8 @@ const queueObj = {
     nurseId: undefined,
     date: new Date(),
     capacity: '', //      ( numSpots*workingHours )
-    patientsServed: '',
-    avgTime: '', //   ( timepast / patients_Served )
+    // patientsServed: 0,
+    // avgTime: 0, //   ( timepast / patients_Served )
 }
 
 // how to avoid runing this function every time we enter dashboard?
@@ -96,7 +96,7 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
 
     // 1. Check if the required fields are provided
     if (email === "" || fName === "" || lName === "" || status === "") {
-        res.send({errorMessage: "Please fill all the required fields."});
+        res.send({ errorMessage: "Please fill all the required fields." });
         return; // stops the execution of the function further
     }
 
@@ -122,7 +122,7 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
         }
         const typeOfTimeStamp = timeStampTypes[status]
 
-        Appointment.create({ code, fName, lName, email, tags, isUrgent, status, [typeOfTimeStamp]: new Date() })
+        Appointment.create({ code, fName, lName, email, tags, isUrgent, status, [typeOfTimeStamp]: (new Date())-120000 })
             .then((appointment) => {
 
                 // 3. push the appointment _id into Queue deppending of the status
@@ -194,13 +194,15 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
     const appointment_attending_At = new Date()
 
     // 1. Search  appointment in DB to change status.
-    Appointment.findByIdAndUpdate(id, { status: 'attending', appointment_attending_At })
+    Appointment.findByIdAndUpdate(id, { status: 'attending', appointment_attending_At }, { new: true })
         .then((appointment) => {
             // console.log(appointment);
 
-            return appointment
-        })
-        .then((appointment) => {
+            const waitingTime = parseInt((appointment.appointment_attending_At - appointment.appointment_start_At) / 60000)
+            console.log('typeof :>> ', new Date(appointment.appointment_start_At).getTime(), new Date(appointment.appointment_attending_At).getTime());
+            console.log('waitingTime :>> ', parseInt(waitingTime));
+
+
             // console.log(appointment)
             // push the appointment _id into queue.inProgress[]
             Queue.find({ date: { $gte: todayString } })
@@ -211,8 +213,14 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
                     // console.log(inProgressArray);
                     inProgressArray.push(appointment._id)
                     // console.log(inProgressArray);
+                    console.log('queue.totalTime + waitingTime  :>> ', todayQ.totalTime,  waitingTime  );
+                    const update = {
+                        $inc: { patientsServed: 1, totalTime: waitingTime },
+                        inProgress: inProgressArray,
+                        avgTime: Number((todayQ.totalTime + waitingTime) / (todayQ.patientsServed + 1).toFixed(0))
+                    }
 
-                    return Queue.findByIdAndUpdate(todayQ._id, { inProgress: inProgressArray })
+                    return Queue.findByIdAndUpdate(todayQ._id, update, { new: true })
 
                 }) // update the appointments array to remove the moved appointment
                 .then((queue) => {

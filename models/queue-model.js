@@ -9,8 +9,9 @@ const queueSchema = new Schema({
     nurseId: Schema.Types.ObjectId,
     date: Date,
     capacity: Number, //      ( numSpots*workingHours )
-    patientsServed: Number,
-    avgTime: Number, //   ( timepast / patients_Served )
+    patientsServed: { type: Number, default: 0 },
+    avgTime: { type: Number, default: 0 },
+    totalTime: { type: Number, default: 0 } //   ( timepast / patients_Served )
 });
 // CREATE MODEL
 //                            queues

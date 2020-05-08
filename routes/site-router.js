@@ -10,6 +10,9 @@ const Room = require('./../models/room-model')
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+//min waiting time     milisecs sec mins -- 5 mins
+const subscriptionTime = 1000 * 60 * 5
+
 let today = new Date()
 let todayString = today.toLocaleDateString()
 console.log(todayString, today);
@@ -77,6 +80,7 @@ siteRouter.get('/dashboard', isLoggedIn, (req, res, next) => {
 
         })
         .then((createdQ) => {
+            console.log('createdQ :>> ', createdQ);
             res.render('dashboard', { queue: createdQ })
         })
         .catch((err) => next(err));
@@ -122,7 +126,8 @@ siteRouter.post('/appointment', isLoggedIn, (req, res, next) => {
         }
         const typeOfTimeStamp = timeStampTypes[status]
 
-        Appointment.create({ code, fName, lName, email, tags, isUrgent, status, [typeOfTimeStamp]: (new Date())-120000 })
+
+        Appointment.create({ code, fName, lName, email, tags, isUrgent, status, [typeOfTimeStamp]: (new Date()) - subscriptionTime })
             .then((appointment) => {
 
                 // 3. push the appointment _id into Queue deppending of the status
@@ -213,11 +218,11 @@ siteRouter.get('/dashboard/to_room/:id', isLoggedIn, (req, res, next) => {
                     // console.log(inProgressArray);
                     inProgressArray.push(appointment._id)
                     // console.log(inProgressArray);
-                    console.log('queue.totalTime + waitingTime  :>> ', todayQ.totalTime,  waitingTime  );
+                    console.log('queue.totalTime + waitingTime  :>> ', todayQ.totalTime, waitingTime);
                     const update = {
                         $inc: { patientsServed: 1, totalTime: waitingTime },
                         inProgress: inProgressArray,
-                        avgTime: Number((todayQ.totalTime + waitingTime) / (todayQ.patientsServed + 1).toFixed(0))
+                        avgTime: parseInt((todayQ.totalTime + waitingTime) / (todayQ.patientsServed + 1))
                     }
 
                     return Queue.findByIdAndUpdate(todayQ._id, update, { new: true })
@@ -303,17 +308,22 @@ siteRouter.get('/dashboard/delete/:id/:status', isLoggedIn, (req, res, next) => 
 siteRouter.get('/dashboard/done/:id', isLoggedIn, (req, res, next) => {
     const { id } = req.params;
     const appointment_finished_At = new Date()
+    var start = new Date();
+    start.setHours(0, 0, 0, 0);
 
+    var end = new Date();
+    end.setHours(23, 59, 59, 999);
 
     // 1. Search  appointment in DB to change status.
-    Appointment.findByIdAndUpdate(id, { status: 'attended', appointment_finished_At })
+    Appointment.findByIdAndUpdate(id, { status: 'attended', appointment_finished_At }, { new: true })
         .then((appointment) => {
+            console.log('appointment :>> ', appointment);
 
             return appointment
         })
         .then((appointment) => {
             // push the appointment _id into queue.appointments_done[]
-            Queue.find({ date: { $gte: todayString } })
+            Queue.find({ date: { $gte: start, $lte: end } })
                 .then((queue) => {
                     const todayQ = queue[0]
                     let appointments_doneArray = todayQ.appointments_done

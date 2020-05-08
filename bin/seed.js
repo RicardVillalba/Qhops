@@ -10,8 +10,8 @@ let queue = {
   nurseId: '5eaaf29e9f801f3aa609c3dd',
   date: new Date(),
   capacity: 10, //      ( numSpots*workingHours )
-  patientsServed: 10,
-  avgTime: 3694948, //   ( timepast / patients_Served )
+  //patientsServed: 0,
+  //avgTime: 0, //   ( timepast / patients_Served )
 
 }
 

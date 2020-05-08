@@ -95,6 +95,14 @@ appointmentForm.addEventListener('submit', (e) => {
 
       })
   }, 1800)
+  document.getElementById('fName').value = ''
+  document.getElementById('lName').value = ''
+  document.getElementById('email').value = ''
+  document.getElementById('tags-list').value = ''
+  document.getElementById('isUrgent').value = ''
+  document.getElementById('waiting').checked = true
+  document.getElementById('tags').innerHTML = ''
+  
 })
 
 

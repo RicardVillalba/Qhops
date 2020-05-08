@@ -370,8 +370,13 @@ input[type="text"] {
   transition:  height 1s;
 }
 
+#tags{
+  height: 20px;
+  overflow-y: scroll;
+}
+
 #add-appointment.open{
-  height: 420px;
+  height: 440px;
 }
 
 .dashboard-table {

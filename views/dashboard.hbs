@@ -65,6 +65,8 @@
         </form>
     </div>
 </div>
+<h1 class="row my-3 justify-content-center">Average Waiting Time: {{queue.0.avgTime}} minutes</h1>
+
 <div class="container dashboard-table table-responsive py-3">
     <caption class="py-2">Waiting list</caption>
     <table id="waiting-table" class="table table-sm table-hover">
@@ -92,11 +94,12 @@
                 </td>
                 <td class="d-none d-md-block">{{this.email}}</td>
                 <td>
-                    <a href="/dashboard/to_room/{{this._id}}">
-                        <button class="btn p-1 float-right">ROOM</button>
-                    </a>
+
                     <a href="/dashboard/delete/{{this._id}}/{{this.status}}">
                         <button class="btn p-1 float-right">DELETE</button>
+                    </a>
+                    <a href="/dashboard/to_room/{{this._id}}">
+                        <button class="btn p-1 float-right">ROOM</button>
                     </a>
 
                 </td>
@@ -134,12 +137,13 @@
                 </td>
                 <td class="d-none d-md-block">{{this.email}}</td>
                 <td>
-                    <a href="/dashboard/done/{{this._id}}">
-                        <button class="btn p-1 float-right">DONE</button>
-                    </a>
                     <a href="/dashboard/delete/{{this._id}}/{{this.status}}">
                         <button class="btn p-1 float-right">DELETE</button>
                     </a>
+                    <a href="/dashboard/done/{{this._id}}">
+                        <button class="btn p-1 float-right">DONE</button>
+                    </a>
+
                 </td>
             </tr>
             {{/each}}
